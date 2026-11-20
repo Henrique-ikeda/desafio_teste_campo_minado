@@ -31,7 +31,7 @@ Agentes de IA sabem fazer TDD quando alguém pede, mas não fazem sozinhos. Sem 
 
 ## Como usar no dia a dia
 
-1. `git checkout -b seunome/a2-tabuleiro` (ou a branch da sua tarefa).
+1. `git checkout -b henrique/a2-tabuleiro` (ou a branch da sua tarefa).
 2. Abrir o agente na pasta do repositório:
    - **Claude Code:** `/tdd A2`. O `CLAUDE.md` já carrega o `AGENTS.md`.
    - **Codex:** `$tdd A2`. O Codex lê o `AGENTS.md` sozinho. Na primeira vez, aprove o hook com `/hooks`.

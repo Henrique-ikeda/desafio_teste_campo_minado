@@ -17,8 +17,8 @@ Regras completas, contrato da tela e divisão das tarefas: [PLANEJAMENTO.md](PLA
 
 | Nome | RA | GitHub | Parte no trabalho |
 |---|---|---|---|
-| SEU_NOME | SEU_RA | [SEU_GITHUB](https://github.com/SEU_GITHUB) | Tarefas A1–A5: estrutura do projeto e 12 casos de teste (tabuleiro, revelar, cascata, cronômetro) |
-| NOME_FELIPE | RA_FELIPE | [GITHUB_FELIPE](https://github.com/GITHUB_FELIPE) | Tarefas F1–F5: CI, README e 13 casos de teste (bandeiras, derrota, vitória, nova partida, abrir vizinhos) |
+| Henrique | SEU_RA | [Henrique-ikeda](https://github.com/Henrique-ikeda) | Tarefas A1–A5: estrutura do projeto e 12 casos de teste (tabuleiro, revelar, cascata, cronômetro) |
+| Felipe | RA_FELIPE | [GITHUB_FELIPE](https://github.com/GITHUB_FELIPE) | Tarefas F1–F5: CI, README e 13 casos de teste (bandeiras, derrota, vitória, nova partida, abrir vizinhos) |
 
 As contribuições de cada um aparecem em **Insights → Contributors** e nos commits.
 
@@ -50,31 +50,31 @@ npx jest tests/<arquivo>.spec.js -t "TC-CM-NN"   # um caso só
 
 | ID | Cenário | Arquivo | Resultado esperado | Autor |
 |---|---|---|---|---|
-| TC-CM-01 | Tabuleiro 18 × 14 | `tests/tabuleiro.spec.js` | 252 células `oculta`; `contador-minas` = 40; `cronometro` = 0 | SEU_NOME |
-| TC-CM-02 | Sorteio tem 40 minas | `tests/tabuleiro.spec.js` | Ao perder: `explodida` + `mina` = 40 | SEU_NOME |
-| TC-CM-03 | Parâmetro `minas` | `tests/tabuleiro.spec.js` | Perde ao clicar `1-10`; minas mostradas = exatamente `MINAS_PADRAO` | SEU_NOME |
-| TC-CM-04 | Revelar célula com número | `tests/tabuleiro.spec.js` | `1-9` = `revelada` com "2"; outras 251 ocultas | SEU_NOME |
-| TC-CM-05 | Número de minas vizinhas (parametrizado) | `tests/tabuleiro.spec.js` | `13-16` = 1, `1-9` = 2, `7-9` = 3, `13-17` = 4 | SEU_NOME |
-| TC-CM-06 | Clicar de novo numa revelada | `tests/tabuleiro.spec.js` | Nada muda | SEU_NOME |
-| TC-CM-07 | Cascata | `tests/tabuleiro.spec.js` | `1-1` abre 126 células (colunas 1–9) | SEU_NOME |
-| TC-CM-08 | Cascata para nos números e nunca revela mina | `tests/tabuleiro.spec.js` | `1-13` abre 86 células; minas continuam ocultas | SEU_NOME |
-| TC-CM-09 | Primeiro clique seguro | `tests/tabuleiro.spec.js` | Em 10 jogos sorteados, o 1º clique nunca perde | SEU_NOME |
-| TC-CM-10 | Cronômetro começa no 1º clique | `tests/cronometro.spec.js` | 0 antes do clique; 3 após 3 s | SEU_NOME |
-| TC-CM-11 | Cronômetro para no fim | `tests/cronometro.spec.js` | Continua 5 depois da derrota | SEU_NOME |
-| TC-CM-12 | Cronômetro não passa de 999 | `tests/cronometro.spec.js` | 999 após 1200 s | SEU_NOME |
-| TC-CM-13 | Pôr bandeira | `tests/bandeiras.spec.js` | `bandeira`; contador 39 | NOME_FELIPE |
-| TC-CM-14 | Tirar bandeira | `tests/bandeiras.spec.js` | `oculta`; contador 40 | NOME_FELIPE |
-| TC-CM-15 | Bandeira protege a célula | `tests/bandeiras.spec.js` | Clique esquerdo na bandeira não revela nem perde | NOME_FELIPE |
-| TC-CM-16 | Sem bandeira em célula revelada | `tests/bandeiras.spec.js` | Continua `revelada`; contador 40 | NOME_FELIPE |
-| TC-CM-17 | Derrota | `tests/fim-de-jogo.spec.js` | `explodida`; 39 `mina`; "Você perdeu!" | NOME_FELIPE |
-| TC-CM-18 | Bandeira errada na derrota | `tests/fim-de-jogo.spec.js` | Bandeira sem mina = `bandeira-errada`; bandeira certa continua | NOME_FELIPE |
-| TC-CM-19 | Tabuleiro bloqueado após derrota | `tests/fim-de-jogo.spec.js` | Cliques não mudam nada | NOME_FELIPE |
-| TC-CM-20 | Vitória | `tests/fim-de-jogo.spec.js` | "Você venceu!"; 212 reveladas; 40 bandeiras; contador 0 | NOME_FELIPE |
-| TC-CM-21 | Tabuleiro bloqueado após vitória | `tests/fim-de-jogo.spec.js` | Clique direito não tira bandeira | NOME_FELIPE |
-| TC-CM-22 | Nova partida | `tests/fim-de-jogo.spec.js` | Tudo zerado; o jogo novo funciona com as mesmas minas | NOME_FELIPE |
-| TC-CM-23 | Abrir vizinhos com bandeiras certas | `tests/abrir-vizinhos.spec.js` | Vizinhas abertas + cascata (126 reveladas) | NOME_FELIPE |
-| TC-CM-24 | Abrir vizinhos com bandeiras de menos | `tests/abrir-vizinhos.spec.js` | Nada abre | NOME_FELIPE |
-| TC-CM-25 | Abrir vizinhos com bandeira errada | `tests/abrir-vizinhos.spec.js` | `2-10` explode; "Você perdeu!" | NOME_FELIPE |
+| TC-CM-01 | Tabuleiro 18 × 14 | `tests/tabuleiro.spec.js` | 252 células `oculta`; `contador-minas` = 40; `cronometro` = 0 | Henrique |
+| TC-CM-02 | Sorteio tem 40 minas | `tests/tabuleiro.spec.js` | Ao perder: `explodida` + `mina` = 40 | Henrique |
+| TC-CM-03 | Parâmetro `minas` | `tests/tabuleiro.spec.js` | Perde ao clicar `1-10`; minas mostradas = exatamente `MINAS_PADRAO` | Henrique |
+| TC-CM-04 | Revelar célula com número | `tests/tabuleiro.spec.js` | `1-9` = `revelada` com "2"; outras 251 ocultas | Henrique |
+| TC-CM-05 | Número de minas vizinhas (parametrizado) | `tests/tabuleiro.spec.js` | `13-16` = 1, `1-9` = 2, `7-9` = 3, `13-17` = 4 | Henrique |
+| TC-CM-06 | Clicar de novo numa revelada | `tests/tabuleiro.spec.js` | Nada muda | Henrique |
+| TC-CM-07 | Cascata | `tests/tabuleiro.spec.js` | `1-1` abre 126 células (colunas 1–9) | Henrique |
+| TC-CM-08 | Cascata para nos números e nunca revela mina | `tests/tabuleiro.spec.js` | `1-13` abre 86 células; minas continuam ocultas | Henrique |
+| TC-CM-09 | Primeiro clique seguro | `tests/tabuleiro.spec.js` | Em 10 jogos sorteados, o 1º clique nunca perde | Henrique |
+| TC-CM-10 | Cronômetro começa no 1º clique | `tests/cronometro.spec.js` | 0 antes do clique; 3 após 3 s | Henrique |
+| TC-CM-11 | Cronômetro para no fim | `tests/cronometro.spec.js` | Continua 5 depois da derrota | Henrique |
+| TC-CM-12 | Cronômetro não passa de 999 | `tests/cronometro.spec.js` | 999 após 1200 s | Henrique |
+| TC-CM-13 | Pôr bandeira | `tests/bandeiras.spec.js` | `bandeira`; contador 39 | Felipe |
+| TC-CM-14 | Tirar bandeira | `tests/bandeiras.spec.js` | `oculta`; contador 40 | Felipe |
+| TC-CM-15 | Bandeira protege a célula | `tests/bandeiras.spec.js` | Clique esquerdo na bandeira não revela nem perde | Felipe |
+| TC-CM-16 | Sem bandeira em célula revelada | `tests/bandeiras.spec.js` | Continua `revelada`; contador 40 | Felipe |
+| TC-CM-17 | Derrota | `tests/fim-de-jogo.spec.js` | `explodida`; 39 `mina`; "Você perdeu!" | Felipe |
+| TC-CM-18 | Bandeira errada na derrota | `tests/fim-de-jogo.spec.js` | Bandeira sem mina = `bandeira-errada`; bandeira certa continua | Felipe |
+| TC-CM-19 | Tabuleiro bloqueado após derrota | `tests/fim-de-jogo.spec.js` | Cliques não mudam nada | Felipe |
+| TC-CM-20 | Vitória | `tests/fim-de-jogo.spec.js` | "Você venceu!"; 212 reveladas; 40 bandeiras; contador 0 | Felipe |
+| TC-CM-21 | Tabuleiro bloqueado após vitória | `tests/fim-de-jogo.spec.js` | Clique direito não tira bandeira | Felipe |
+| TC-CM-22 | Nova partida | `tests/fim-de-jogo.spec.js` | Tudo zerado; o jogo novo funciona com as mesmas minas | Felipe |
+| TC-CM-23 | Abrir vizinhos com bandeiras certas | `tests/abrir-vizinhos.spec.js` | Vizinhas abertas + cascata (126 reveladas) | Felipe |
+| TC-CM-24 | Abrir vizinhos com bandeiras de menos | `tests/abrir-vizinhos.spec.js` | Nada abre | Felipe |
+| TC-CM-25 | Abrir vizinhos com bandeira errada | `tests/abrir-vizinhos.spec.js` | `2-10` explode; "Você perdeu!" | Felipe |
 
 ## Estrutura
 
@@ -87,4 +87,3 @@ scripts/verificar-testes.mjs  verificador (npm run verificar e CI)
 PLANEJAMENTO.md               regras, contrato, tarefas e casos de teste
 docs/                         matriz de cobertura e TDD com IA
 ```
-# desafio_teste_campo_minado

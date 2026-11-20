@@ -4,8 +4,8 @@ Campo minado em tabuleiro **18 × 14** com **40 minas**: **casos de teste de int
 
 | Integrante | GitHub | Papel neste repositório |
 |---|---|---|
-| SEU_NOME (SEU_RA) | SEU_GITHUB | Setup do projeto e testes de: tabuleiro, revelar células, números, cascata e cronômetro (tarefas A1–A5) |
-| NOME_FELIPE (RA_FELIPE) | GITHUB_FELIPE | CI, README e testes de: bandeiras, derrota, vitória, nova partida e abrir vizinhos (tarefas F1–F5) |
+| Henrique (SEU_RA) | Henrique-ikeda | Setup do projeto e testes de: tabuleiro, revelar células, números, cascata e cronômetro (tarefas A1–A5) |
+| Felipe (RA_FELIPE) | GITHUB_FELIPE | CI, README e testes de: bandeiras, derrota, vitória, nova partida e abrir vizinhos (tarefas F1–F5) |
 
 ---
 
@@ -111,8 +111,8 @@ desafio_teste_campo_minado/
 ├── index.html                    A1  esqueleto: elementos fixos da seção 3, vazios
 ├── js/main.js                    A1  vazio (o jogo não é implementado)
 ├── tests/helpers.js              A1  abrirJogo(), MINAS_PADRAO e atalhos
-├── tests/tabuleiro.spec.js       SEU_NOME  (A2–A4)
-├── tests/cronometro.spec.js      SEU_NOME  (A5)
+├── tests/tabuleiro.spec.js       Henrique  (A2–A4)
+├── tests/cronometro.spec.js      Henrique  (A5)
 ├── tests/bandeiras.spec.js       Felipe    (F2)
 ├── tests/fim-de-jogo.spec.js     Felipe    (F3, F4)
 ├── tests/abrir-vizinhos.spec.js  Felipe    (F5)
@@ -187,15 +187,15 @@ Cada integrante é **dono de arquivos de teste diferentes** (coluna "Arquivos").
 
 **Usando agentes de IA (Claude Code ou Codex):** os dois seguem a skill `tdd` (lida pelo [`AGENTS.md`](AGENTS.md)). Para começar uma tarefa: `/tdd A2` no Claude Code ou `$tdd A2` no Codex; depois, "go" escreve o próximo TC. Cada integrante roda o agente na própria máquina, com o próprio `git config`, para os commits saírem no nome de quem fez.
 
-### SEU_NOME (tarefas A)
+### Henrique (tarefas A)
 
 | Tarefa | Branch | Arquivos | Casos de teste |
 |---|---|---|---|
-| **A1** Setup: `package.json`, `babel.config.cjs`, `js/main.js` vazio, `.gitignore`, `index.html` esqueleto, `tests/helpers.js`, verificador, skill, sub-agentes e hooks, PLANEJAMENTO e docs | `seunome/a1-setup` | tudo, menos `README.md` e `.github/` | — |
-| **A2** Tabuleiro e minas | `seunome/a2-tabuleiro` | tests/tabuleiro.spec.js | TC-CM-01, 02, 03 |
-| **A3** Revelar e números | `seunome/a3-revelar` | tests/tabuleiro.spec.js | TC-CM-04, 05, 06 |
-| **A4** Cascata e primeiro clique | `seunome/a4-cascata` | tests/tabuleiro.spec.js | TC-CM-07, 08, 09 |
-| **A5** Cronômetro | `seunome/a5-cronometro` | tests/cronometro.spec.js | TC-CM-10, 11, 12 |
+| **A1** Setup: `package.json`, `babel.config.cjs`, `js/main.js` vazio, `.gitignore`, `index.html` esqueleto, `tests/helpers.js`, verificador, skill, sub-agentes e hooks, PLANEJAMENTO e docs | `henrique/a1-setup` | tudo, menos `README.md` e `.github/` | — |
+| **A2** Tabuleiro e minas | `henrique/a2-tabuleiro` | tests/tabuleiro.spec.js | TC-CM-01, 02, 03 |
+| **A3** Revelar e números | `henrique/a3-revelar` | tests/tabuleiro.spec.js | TC-CM-04, 05, 06 |
+| **A4** Cascata e primeiro clique | `henrique/a4-cascata` | tests/tabuleiro.spec.js | TC-CM-07, 08, 09 |
+| **A5** Cronômetro | `henrique/a5-cronometro` | tests/cronometro.spec.js | TC-CM-10, 11, 12 |
 
 ### Felipe (tarefas F)
 
@@ -211,7 +211,7 @@ Cada integrante é **dono de arquivos de teste diferentes** (coluna "Arquivos").
 
 Salvo quando dito outro, todos usam `?minas=MINAS_PADRAO`.
 
-### SEU_NOME — tabuleiro, revelar, cascata e cronômetro
+### Henrique — tabuleiro, revelar, cascata e cronômetro
 
 | ID | Cenário | Parâmetros / passos | Resultado esperado |
 |---|---|---|---|
@@ -250,13 +250,13 @@ Salvo quando dito outro, todos usam `?minas=MINAS_PADRAO`.
 
 Para o professor enxergar a contribuição dos dois, **cada um commita da própria conta**:
 
-1. **SEU_NOME** cria o repositório e adiciona `GITHUB_FELIPE` como colaborador (Settings → Collaborators). **Felipe** aceita o convite.
+1. **Henrique** cria o repositório e adiciona `GITHUB_FELIPE` como colaborador (Settings → Collaborators). **Felipe** aceita o convite.
 2. Cada um configura o Git com o e-mail **cadastrado na própria conta do GitHub** (senão o commit não conta como contribuição):
    ```bash
    git config user.name "Seu Nome"
    git config user.email "email-da-sua-conta@exemplo.com"
    ```
-3. Ninguém commita direto na `main`. Uma branch por tarefa: `seunome/a2-...`, `felipe/f2-...`, etc.
+3. Ninguém commita direto na `main`. Uma branch por tarefa: `henrique/a2-...`, `felipe/f2-...`, etc.
 4. Mensagens no padrão Conventional Commits, em português: `test:`, `docs:`, `chore:`, `ci:`. Commits pequenos: um caso de teste por commit.
 5. Pull Request para `main` → o **outro** integrante revisa e aprova → merge com **"Create a merge commit"** (não usar *squash*, para manter todos os commits de cada autor no histórico).
 6. Antes de abrir o PR: `git pull origin main` e `npm run verificar` sem problemas. O CI precisa estar verde no PR.

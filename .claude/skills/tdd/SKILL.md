@@ -21,10 +21,10 @@ Por isso a regra é **um teste por vez, rodando cada um**, e conferindo que ele 
 
 ## 0. Antes de começar: qual tarefa e de quem
 
-1. Pergunte (se não foi dito) **qual tarefa** do `PLANEJAMENTO.md` será feita: `A1`…`A5` (SEU_NOME) ou `F1`…`F5` (Felipe).
+1. Pergunte (se não foi dito) **qual tarefa** do `PLANEJAMENTO.md` será feita: `A1`…`A5` (Henrique) ou `F1`…`F5` (Felipe).
 2. Leia no `PLANEJAMENTO.md`: as regras (seção 1), o contrato de interface (seção 3) e os casos de teste da tarefa (seção 5).
 3. Trabalhe **só nos arquivos de teste do dono da tarefa** (coluna "Arquivos" da seção 4). Se precisar mexer em `tests/helpers.js` ou no arquivo do outro integrante, pare e avise.
-4. Confira a branch: `seunome/<tarefa>` ou `felipe/<tarefa>` (seção 4). Nunca commite na `main`. Os commits saem com o `git config` da pessoa que está usando o agente; não altere `user.name`/`user.email`.
+4. Confira a branch: `henrique/<tarefa>` ou `felipe/<tarefa>` (seção 4). Nunca commite na `main`. Os commits saem com o `git config` da pessoa que está usando o agente; não altere `user.name`/`user.email`.
 
 ## 1. Lista de testes e planejamento
 

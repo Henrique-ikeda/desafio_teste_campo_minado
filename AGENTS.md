@@ -1,6 +1,6 @@
 # AGENTS.md — desafio_teste_campo_minado
 
-Casos de teste de interface (Jest + Testing Library, jsdom) para **Campo minado 18 × 14 com 40 minas** em JavaScript. Trabalho em dupla: SEU_NOME (tarefas A1–A5) e Felipe (tarefas F1–F5). Este arquivo vale para qualquer agente (Codex, Claude Code…).
+Casos de teste de interface (Jest + Testing Library, jsdom) para **Campo minado 18 × 14 com 40 minas** em JavaScript. Trabalho em dupla: Henrique (tarefas A1–A5) e Felipe (tarefas F1–F5). Este arquivo vale para qualquer agente (Codex, Claude Code…).
 
 > ⚠️ **Modo somente testes.** O jogo não é implementado. Não escreva código do jogo em `js/`. Cada teste deve **falhar pelo motivo certo** (asserção ou elemento não encontrado), nunca passar e nunca falhar por erro do próprio teste.
 
@@ -32,7 +32,7 @@ npm run verificar:completo                      # idem + TCs do plano ainda sem 
 - Testes só pela interface: `abrirJogo(params)`, `celula('L-C')`, `cliqueDireito(user, el)` e os outros atalhos de `tests/helpers.js`, `screen.getByTestId`, `user-event`. Sem importar `js/*.js` e sem `jest.mock`.
 - `index.html` é só o esqueleto: elementos fixos da seção 3 **vazios**, sem texto nem atributos de estado. `js/main.js` fica vazio.
 - Altere só os arquivos de teste do dono da tarefa (seção 4 do PLANEJAMENTO.md).
-- Uma branch por tarefa (`seunome/...` ou `felipe/...`), Conventional Commits em português (`test:`, `docs:`, `chore:`, `ci:`). Nunca commitar na `main`, nunca dar push nem abrir PR sem a pessoa pedir, nunca mudar `git config user.*`.
+- Uma branch por tarefa (`henrique/...` ou `felipe/...`), Conventional Commits em português (`test:`, `docs:`, `chore:`, `ci:`). Nunca commitar na `main`, nunca dar push nem abrir PR sem a pessoa pedir, nunca mudar `git config user.*`.
 - Ao terminar uma tarefa, atualize a tabela de casos de teste do README.
 
 ## Hook de testes
