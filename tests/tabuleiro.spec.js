@@ -54,3 +54,33 @@ test('TC-CM-01 tabuleiro 18 × 14', async () => {
   expect(screen.queryByTestId('celula-1-19')).toBeNull();
   expect(screen.queryByTestId('celula-0-1')).toBeNull();
 });
+
+// TC-CM-02: sem parâmetros, o sorteio é aleatório. O teste só confere a propriedade
+// do sorteio (40 minas, 1 explodida) e nunca confere posições.
+test('TC-CM-02 sorteio tem 40 minas', async () => {
+  const user = await abrirJogo();
+
+  // Clica as células ocultas em ordem até perder, com limite de 252 cliques.
+  let cliques = 0;
+  let texto = '';
+  for (const pos of TODAS_AS_CELULAS) {
+    if (cliques >= 252) break;
+    if (celula(pos).getAttribute('data-estado') !== 'oculta') continue;
+
+    await user.click(celula(pos));
+    cliques++;
+    texto = screen.getByTestId('mensagem').textContent.trim();
+
+    if (texto === 'Você perdeu!') break;
+    // Com 40 minas seguindo a ordem não dá para vencer antes de perder.
+    expect(texto).not.toBe('Você venceu!');
+  }
+
+  // Positivo: o jogo termina em derrota (também cobre "acabaram as células sem perder").
+  expect(screen.getByTestId('mensagem')).toHaveTextContent(/^Você perdeu!$/);
+
+  // Positivo: exatamente 40 minas (uma explodida + as outras mostradas).
+  const e = contarEstados();
+  expect(e.explodida).toBe(1);
+  expect(e.explodida + e.mina).toBe(40);
+}, 60_000);
