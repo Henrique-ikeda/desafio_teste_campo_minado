@@ -231,6 +231,7 @@ Salvo quando dito outro, todos usam `?minas=MINAS_PADRAO`.
 | TC-CM-10 | Cronômetro começa no 1º clique | Relógio falso. Esperar 3 s; clicar `1-9`; esperar 3 s | Antes do clique, depois de 3 s: `cronometro` = 0. 3 s depois do clique: 3 |
 | TC-CM-11 | Cronômetro para no fim | Relógio falso. Clicar `1-9`; esperar 5 s; clicar `1-10` (perde); esperar 10 s | `cronometro` = 5 no momento da derrota e continua 5 depois de mais 10 s |
 | TC-CM-12 | Cronômetro não passa de 999 | Relógio falso. Clicar `1-9`; esperar 1200 s | `cronometro` = 999 |
+| TC-CM-31 | Número de minas vizinhas de 5 a 8 (parametrizado; caso adicional) | 4 jogos, cada um com 40 minas no parâmetro `minas`: base de 32 (colunas 17 e 18 inteiras + coluna 16 das linhas 1–4) + as 8 vizinhas de `2-2` (`1-1`, `1-2`, `1-3`, `2-1`, `2-3`, `3-1`, `3-2`, `3-3`). Para "7", "6" e "5", tirar `3-3`; `3-3` e `3-2`; `3-3`, `3-2` e `3-1`, pondo no lugar `5-16`; `5-16` e `6-16`; `5-16`, `6-16` e `7-16`. Clicar `2-2` | Texto "8", "7", "6", "5", respectivamente; só `2-2` é revelada (251 `oculta`) |
 
 ### Felipe — bandeiras, fim de jogo e abrir vizinhos
 

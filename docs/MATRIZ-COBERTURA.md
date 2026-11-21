@@ -6,7 +6,7 @@ Cada regra da seção 1 do PLANEJAMENTO.md tem pelo menos um caso de teste que o
 |---|---|---|
 | 1 | Tabuleiro 18 × 14 = 252 células, todas ocultas no início | 01 |
 | 2 | 40 minas (sorteadas ou pelo parâmetro `minas`) | 02, 03 |
-| 3 | Revelar mostra o número de minas vizinhas (1 a 8) | 04, 05 |
+| 3 | Revelar mostra o número de minas vizinhas (1 a 8) | 04, 05, 31 |
 | 4 | Clicar numa célula já revelada não muda nada | 06 |
 | 5 | Célula vazia abre em cascata, que para nos números e nunca revela mina | 07, 08, 23 |
 | 6 | Primeiro clique seguro (só no sorteio) | 09, 03 |
