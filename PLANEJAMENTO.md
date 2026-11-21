@@ -4,8 +4,8 @@ Campo minado em tabuleiro **18 × 14** com **40 minas**: **casos de teste de int
 
 | Integrante | GitHub | Papel neste repositório |
 |---|---|---|
-| Henrique (SEU_RA) | Henrique-ikeda | Setup do projeto e testes de: tabuleiro, revelar células, números, cascata e cronômetro (tarefas A1–A5) |
-| Felipe (RA_FELIPE) | GITHUB_FELIPE | CI, README e testes de: bandeiras, derrota, vitória, nova partida e abrir vizinhos (tarefas F1–F5) |
+| Henrique Kendi Ikeda (RA 24039456-2) | Henrique-ikeda | Setup do projeto e testes de: tabuleiro, revelar células, números, cascata e cronômetro (tarefas A1–A5) |
+| Felipe Galeti Gôngora (RA 24036480-2) | FGaleti | CI, README e testes de: bandeiras, derrota, vitória, nova partida e abrir vizinhos (tarefas F1–F5) |
 
 ---
 
@@ -207,6 +207,10 @@ Cada integrante é **dono de arquivos de teste diferentes** (coluna "Arquivos").
 | **F4** Vitória e nova partida | `felipe/f4-vitoria` | tests/fim-de-jogo.spec.js | TC-CM-20, 21, 22 |
 | **F5** Abrir vizinhos (duplo clique) | `felipe/f5-abrir-vizinhos` | tests/abrir-vizinhos.spec.js | TC-CM-23, 24, 25 |
 
+### IDs reservados para casos de teste adicionais
+
+Para os dois poderem acrescentar casos sem colidir: **TC-CM-26 a TC-CM-30** ficam para o Felipe; **TC-CM-31 em diante** ficam para o Henrique. Cada caso novo entra na seção 5 (commit `docs:` antes do `test:`), na [matriz de cobertura](docs/MATRIZ-COBERTURA.md) e na tabela do README, no mesmo PR da tarefa.
+
 ## 5. Casos de teste (interface)
 
 Salvo quando dito outro, todos usam `?minas=MINAS_PADRAO`.
@@ -250,7 +254,7 @@ Salvo quando dito outro, todos usam `?minas=MINAS_PADRAO`.
 
 Para o professor enxergar a contribuição dos dois, **cada um commita da própria conta**:
 
-1. **Henrique** cria o repositório e adiciona `GITHUB_FELIPE` como colaborador (Settings → Collaborators). **Felipe** aceita o convite.
+1. **Henrique** cria o repositório e adiciona `FGaleti` como colaborador (Settings → Collaborators). **Felipe** aceita o convite.
 2. Cada um configura o Git com o e-mail **cadastrado na própria conta do GitHub** (senão o commit não conta como contribuição):
    ```bash
    git config user.name "Seu Nome"
