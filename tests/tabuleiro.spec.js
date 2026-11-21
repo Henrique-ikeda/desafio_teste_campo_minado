@@ -144,3 +144,34 @@ test('TC-CM-04 revelar célula com número', async () => {
   // Positivo: nenhuma bandeira, contador de minas em 40.
   expect(screen.getByTestId('contador-minas')).toHaveTextContent(/^40$/);
 });
+
+// TC-CM-05: número de minas vizinhas. Os números vêm dos fatos de MINAS_PADRAO (seção 3):
+// 13-16 = 1, 1-9 = 2, 7-9 = 3, 13-17 = 4. Cada caso é uma partida nova.
+test.each([
+  ['13-16', '1'],
+  ['1-9', '2'],
+  ['7-9', '3'],
+  ['13-17', '4'],
+])('TC-CM-05 número de minas vizinhas: %s mostra %s', async (pos, numero) => {
+  const user = await abrirJogo({ minas: MINAS_PADRAO });
+  await user.click(celula(pos));
+
+  // Positivo: a célula clicada fica revelada.
+  expect(celula(pos)).toHaveAttribute('data-estado', 'revelada');
+
+  // Positivo: mostra o número de minas vizinhas.
+  expect(celula(pos)).toHaveTextContent(new RegExp(`^${numero}$`));
+
+  // Positivo: só a célula clicada foi revelada; as outras 251 continuam ocultas.
+  expect(contarEstados()).toEqual({
+    oculta: 251,
+    revelada: 1,
+    bandeira: 0,
+    mina: 0,
+    explodida: 0,
+    'bandeira-errada': 0,
+  });
+
+  // Positivo: a única célula revelada é a clicada.
+  expect(posicoesNoEstado('revelada')).toEqual([pos]);
+});
