@@ -115,3 +115,32 @@ test('TC-CM-03 parâmetro minas', async () => {
   expect(e.oculta).toBe(212);
   expect(e.revelada).toBe(0);
 });
+
+// TC-CM-04: clicar numa célula com número revela só ela. 1-9 tem 2 minas vizinhas
+// (1-10 e 2-10), por isso mostra "2" e não abre cascata.
+test('TC-CM-04 revelar célula com número', async () => {
+  const user = await abrirJogo({ minas: MINAS_PADRAO });
+  await user.click(celula('1-9'));
+
+  // Positivo: 1-9 fica revelada.
+  expect(celula('1-9')).toHaveAttribute('data-estado', 'revelada');
+
+  // Positivo: mostra o número de minas vizinhas (1-10 e 2-10 são minas).
+  expect(celula('1-9')).toHaveTextContent(/^2$/);
+
+  // Positivo: só a célula clicada foi revelada; as outras 251 continuam ocultas.
+  expect(contarEstados()).toEqual({
+    oculta: 251,
+    revelada: 1,
+    bandeira: 0,
+    mina: 0,
+    explodida: 0,
+    'bandeira-errada': 0,
+  });
+
+  // Positivo: o jogo não terminou, então a mensagem continua vazia.
+  expect(screen.getByTestId('mensagem').textContent.trim()).toBe('');
+
+  // Positivo: nenhuma bandeira, contador de minas em 40.
+  expect(screen.getByTestId('contador-minas')).toHaveTextContent(/^40$/);
+});
