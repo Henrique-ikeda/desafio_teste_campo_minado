@@ -175,3 +175,29 @@ test.each([
   // Positivo: a única célula revelada é a clicada.
   expect(posicoesNoEstado('revelada')).toEqual([pos]);
 });
+
+// TC-CM-06: clicar de novo numa célula já revelada não muda nada. 1-9 mostra "2" (seção 3).
+test('TC-CM-06 clicar de novo numa revelada', async () => {
+  const user = await abrirJogo({ minas: MINAS_PADRAO });
+  await user.click(celula('1-9'));
+  await user.click(celula('1-9'));
+
+  // Positivo: 1-9 continua revelada.
+  expect(celula('1-9')).toHaveAttribute('data-estado', 'revelada');
+
+  // Positivo: continua mostrando "2".
+  expect(celula('1-9')).toHaveTextContent(/^2$/);
+
+  // Positivo: só 1-9 revelada; as outras 251 continuam ocultas.
+  expect(contarEstados()).toEqual({
+    oculta: 251,
+    revelada: 1,
+    bandeira: 0,
+    mina: 0,
+    explodida: 0,
+    'bandeira-errada': 0,
+  });
+
+  // Positivo: o jogo não terminou, então a mensagem continua vazia.
+  expect(screen.getByTestId('mensagem').textContent.trim()).toBe('');
+});
