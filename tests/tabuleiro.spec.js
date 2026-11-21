@@ -275,3 +275,34 @@ test('TC-CM-07 cascata', async () => {
   // Positivo: o jogo não terminou, então a mensagem continua vazia.
   expect(screen.getByTestId('mensagem').textContent.trim()).toBe('');
 });
+
+// TC-CM-08: clicar 1-13 (vazia) abre em cascata o lado direito (colunas 11–16, mais 13-17 e 14-17 = 86 células).
+// A cascata para nos números e nunca revela mina: 1-10 e 1-17 (minas) continuam ocultas.
+test('TC-CM-08 cascata para nos números e nunca revela mina', async () => {
+  const user = await abrirJogo({ minas: MINAS_PADRAO });
+  await user.click(celula('1-13'));
+
+  // Positivo: 86 reveladas e 166 ocultas; a cascata nunca revela mina (nenhuma mina nem explodida).
+  const e = contarEstados();
+  expect(e.revelada).toBe(86);
+  expect(e.oculta).toBe(166);
+  expect(e.mina).toBe(0);
+  expect(e.explodida).toBe(0);
+
+  // Positivo: o conjunto revelado é exatamente as colunas 11 a 16, mais 13-17 e 14-17.
+  expect([...posicoesNoEstado('revelada')].sort()).toEqual([...posicoesDasColunas(11, 16), '13-17', '14-17'].sort());
+
+  // Positivo: os números da cascata (1-11 = 2, 1-16 = 2, 13-17 = 4, 14-17 = 2).
+  expect(celula('1-11')).toHaveTextContent(/^2$/);
+  expect(celula('1-16')).toHaveTextContent(/^2$/);
+  expect(celula('13-17')).toHaveTextContent(/^4$/);
+  expect(celula('14-17')).toHaveTextContent(/^2$/);
+
+  // Positivo: as minas 1-10 e 1-17 continuam ocultas; 1-9 (outro lado da parede) também.
+  expect(celula('1-10')).toHaveAttribute('data-estado', 'oculta');
+  expect(celula('1-17')).toHaveAttribute('data-estado', 'oculta');
+  expect(celula('1-9')).toHaveAttribute('data-estado', 'oculta');
+
+  // Positivo: o jogo não terminou, então a mensagem continua vazia.
+  expect(screen.getByTestId('mensagem').textContent.trim()).toBe('');
+});
