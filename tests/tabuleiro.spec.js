@@ -201,3 +201,38 @@ test('TC-CM-06 clicar de novo numa revelada', async () => {
   // Positivo: o jogo não terminou, então a mensagem continua vazia.
   expect(screen.getByTestId('mensagem').textContent.trim()).toBe('');
 });
+
+// TC-CM-31: base de 32 minas (colunas 17 e 18 inteiras + coluna 16 das linhas 1–4), longe de 2-2.
+const BASE_32 = [
+  ...Array.from({ length: 14 }, (_, i) => `${i + 1}-17`),
+  ...Array.from({ length: 14 }, (_, i) => `${i + 1}-18`),
+  ...Array.from({ length: 4 }, (_, i) => `${i + 1}-16`),
+];
+// As 8 vizinhas de 2-2. Para ter 7, 6 ou 5 minas em volta, tira-se 3-3, 3-2, 3-1 (nessa ordem)
+// e põe-se 5-16, 6-16, 7-16 no lugar (longe de 2-2), mantendo sempre 40 minas.
+const VIZINHAS_2_2 = ['1-1', '1-2', '1-3', '2-1', '2-3', '3-1', '3-2', '3-3'];
+const TIRAR = ['3-3', '3-2', '3-1'];
+const REPOR = ['5-16', '6-16', '7-16'];
+const minasComVizinhas = (n) => {
+  const k = 8 - n;
+  return [...BASE_32, ...VIZINHAS_2_2.filter((p) => !TIRAR.slice(0, k).includes(p)), ...REPOR.slice(0, k)];
+};
+
+test.each([[8], [7], [6], [5]])('TC-CM-31 número de minas vizinhas de 5 a 8: 2-2 mostra %i', async (n) => {
+  const minas = minasComVizinhas(n);
+  // Sanidade do próprio cenário (falha do teste seria erro de cenário).
+  expect(new Set(minas).size).toBe(40);
+
+  const user = await abrirJogo({ minas: minas.join(',') });
+  await user.click(celula('2-2'));
+
+  // Positivo: 2-2 fica revelada com o número de minas vizinhas.
+  expect(celula('2-2')).toHaveAttribute('data-estado', 'revelada');
+  expect(celula('2-2')).toHaveTextContent(new RegExp(`^${n}$`));
+
+  // Positivo: só 2-2 revelada; as outras 251 continuam ocultas.
+  expect(contarEstados()).toEqual({ oculta: 251, revelada: 1, bandeira: 0, mina: 0, explodida: 0, 'bandeira-errada': 0 });
+
+  // Positivo: o jogo não terminou, então a mensagem continua vazia.
+  expect(screen.getByTestId('mensagem').textContent.trim()).toBe('');
+});
