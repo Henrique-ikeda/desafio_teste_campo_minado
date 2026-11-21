@@ -324,3 +324,30 @@ test('TC-CM-09 primeiro clique seguro', async () => {
     expect(contarEstados().explodida).toBe(0);
   }
 }, 30_000);
+
+// TC-CM-32 (caso adicional): o lado esquerdo de MINAS_PADRAO (colunas 1–9) é uma região só.
+// De qualquer célula vazia dela a cascata abre as mesmas 126 células. 7-5 e 14-1 são pontos de partida diferentes.
+test.each([['7-5'], ['14-1']])('TC-CM-32 cascata a partir de %s', async (pos) => {
+  const user = await abrirJogo({ minas: MINAS_PADRAO });
+  await user.click(celula(pos));
+
+  // Positivo: as mesmas 126 células reveladas e 126 ocultas.
+  const e = contarEstados();
+  expect(e.revelada).toBe(126);
+  expect(e.oculta).toBe(126);
+
+  // Positivo: o conjunto revelado é exatamente as colunas 1 a 9.
+  expect([...posicoesNoEstado('revelada')].sort()).toEqual(posicoesDasColunas(1, 9));
+
+  // Positivo: a célula de partida é vazia, então não mostra número.
+  expect(celula(pos).textContent.trim()).toBe('');
+
+  // Positivo: 1-9 mostra "2" (número da cascata).
+  expect(celula('1-9')).toHaveTextContent(/^2$/);
+
+  // Positivo: a coluna 10 inteira continua oculta.
+  for (let l = 1; l <= 14; l++) expect(celula(`${l}-10`)).toHaveAttribute('data-estado', 'oculta');
+
+  // Positivo: o jogo não terminou, então a mensagem continua vazia.
+  expect(screen.getByTestId('mensagem').textContent.trim()).toBe('');
+});
