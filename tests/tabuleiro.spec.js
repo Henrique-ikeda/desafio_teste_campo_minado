@@ -1,4 +1,12 @@
-import { abrirJogo, celula, screen, within, TODAS_AS_CELULAS } from './helpers.js';
+import {
+  abrirJogo,
+  celula,
+  screen,
+  within,
+  TODAS_AS_CELULAS,
+  MINAS_PADRAO,
+  LISTA_MINAS_PADRAO,
+} from './helpers.js';
 
 /**
  * Percorre as 252 posições (TODAS_AS_CELULAS) e conta quantas células têm cada data-estado.
@@ -84,3 +92,26 @@ test('TC-CM-02 sorteio tem 40 minas', async () => {
   expect(e.explodida).toBe(1);
   expect(e.explodida + e.mina).toBe(40);
 }, 60_000);
+
+// TC-CM-03: parâmetro `minas` fixa as 40 minas (MINAS_PADRAO), inclusive no primeiro clique.
+test('TC-CM-03 parâmetro minas', async () => {
+  const user = await abrirJogo({ minas: MINAS_PADRAO });
+  await user.click(celula('1-10'));
+
+  // Positivo: a mina clicada no primeiro clique fica explodida.
+  expect(celula('1-10')).toHaveAttribute('data-estado', 'explodida');
+
+  // Positivo: a derrota é anunciada.
+  expect(screen.getByTestId('mensagem')).toHaveTextContent(/^Você perdeu!$/);
+
+  // Positivo: as minas mostradas são exatamente as 40 de MINAS_PADRAO.
+  const mostradas = [...posicoesNoEstado('explodida'), ...posicoesNoEstado('mina')].sort();
+  expect(mostradas).toEqual([...LISTA_MINAS_PADRAO].sort());
+
+  // Positivo: 1 explodida, 39 minas, 212 ocultas e nenhuma revelada.
+  const e = contarEstados();
+  expect(e.explodida).toBe(1);
+  expect(e.mina).toBe(39);
+  expect(e.oculta).toBe(212);
+  expect(e.revelada).toBe(0);
+});
