@@ -220,8 +220,9 @@ const minasComVizinhas = (n) => {
 
 test.each([[8], [7], [6], [5]])('TC-CM-31 número de minas vizinhas de 5 a 8: 2-2 mostra %i', async (n) => {
   const minas = minasComVizinhas(n);
-  // Sanidade do próprio cenário (falha do teste seria erro de cenário).
-  expect(new Set(minas).size).toBe(40);
+  // Sanidade do próprio cenário: erro aqui é erro do teste, não do jogo. Por isso é um Error comum
+  // (o verificador acusa como "motivo errado"), e não um expect (que contaria como motivo certo).
+  if (new Set(minas).size !== 40) throw new Error(`cenário do TC-CM-31 com ${new Set(minas).size} minas, e não 40`);
 
   const user = await abrirJogo({ minas: minas.join(',') });
   await user.click(celula('2-2'));
