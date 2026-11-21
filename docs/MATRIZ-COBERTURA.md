@@ -10,7 +10,7 @@ Cada regra da seção 1 do PLANEJAMENTO.md tem pelo menos um caso de teste que o
 | 4 | Clicar numa célula já revelada não muda nada | 06 |
 | 5 | Célula vazia abre em cascata, que para nos números e nunca revela mina | 07, 08, 23, 32 |
 | 6 | Primeiro clique seguro (só no sorteio) | 09, 03, 35 |
-| 7 | Cronômetro: começa no 1º clique, para no fim, máximo 999 | 10, 11, 12, 22 |
+| 7 | Cronômetro: começa no 1º clique, para no fim, máximo 999 | 10, 11, 12, 22, 33, 34 |
 | 8 | Bandeira com clique direito; tirar com outro clique; contador = 40 − bandeiras | 13, 14, 22 |
 | 9 | Bandeira protege a célula; não pode em célula revelada | 15, 16 |
 | 10 | Derrota: explodida, minas mostradas, bandeiras erradas, mensagem | 17, 18, 25 |

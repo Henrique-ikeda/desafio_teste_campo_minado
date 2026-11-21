@@ -234,6 +234,8 @@ Salvo quando dito outro, todos usam `?minas=MINAS_PADRAO`.
 | TC-CM-31 | Número de minas vizinhas de 5 a 8 (parametrizado; caso adicional) | 4 jogos, cada um com 40 minas no parâmetro `minas`: base de 32 (colunas 17 e 18 inteiras + coluna 16 das linhas 1–4) + as 8 vizinhas de `2-2` (`1-1`, `1-2`, `1-3`, `2-1`, `2-3`, `3-1`, `3-2`, `3-3`). Para "7", "6" e "5", tirar `3-3`; `3-3` e `3-2`; `3-3`, `3-2` e `3-1`, pondo no lugar `5-16`; `5-16` e `6-16`; `5-16`, `6-16` e `7-16`. Clicar `2-2` | Texto "8", "7", "6", "5", respectivamente; só `2-2` é revelada (251 `oculta`) |
 | TC-CM-32 | Cascata a partir do meio e de outro canto (parametrizado; caso adicional) | Em jogos separados, clicar `7-5` e `14-1` | Em cada um: as mesmas 126 células `revelada` (colunas 1–9); `1-9` = "2"; a coluna 10 inteira continua `oculta`; `mensagem` vazia |
 | TC-CM-35 | Primeiro clique seguro mantém 40 minas (caso adicional) | Sem parâmetros. Clicar `7-9`; depois clicar as células ocultas em ordem (`1-1`, `1-2`, …) até perder | Depois do 1º clique: `7-9` = `revelada`. No fim: `mensagem` = "Você perdeu!"; exatamente 1 `explodida` e `explodida` + `mina` = **40** (a mina foi realocada, não apagada) |
+| TC-CM-33 | Cronômetro não começa com bandeira (caso adicional) | Relógio falso. Clique direito em `7-1`; esperar 3 s; clicar `1-9`; esperar 2 s | Depois da bandeira e dos 3 s: `7-1` = `bandeira` e `cronometro` = 0. No fim: `cronometro` = 2 |
+| TC-CM-34 | Cronômetro para na vitória (caso adicional; encosta na vitória, área do Felipe) | Relógio falso. Clicar `1-1`; esperar 4 s; clicar `1-13` (vence); esperar 10 s | `mensagem` = "Você venceu!"; `cronometro` = 4 no momento da vitória e continua 4 depois de mais 10 s |
 
 ### Felipe — bandeiras, fim de jogo e abrir vizinhos
 
