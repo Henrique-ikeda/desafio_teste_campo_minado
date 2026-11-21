@@ -306,3 +306,21 @@ test('TC-CM-08 cascata para nos números e nunca revela mina', async () => {
   // Positivo: o jogo não terminou, então a mensagem continua vazia.
   expect(screen.getByTestId('mensagem').textContent.trim()).toBe('');
 });
+
+// TC-CM-09: sem parâmetro, o sorteio é aleatório. O teste só confere a propriedade
+// "o 1º clique nunca é mina" e nunca confere posições. Cada jogo é aberto de novo (sorteio novo).
+test('TC-CM-09 primeiro clique seguro', async () => {
+  for (let jogo = 1; jogo <= 10; jogo++) {
+    const user = await abrirJogo();
+    await user.click(celula('7-9'));
+
+    // Positivo: o primeiro clique revela 7-9 (nunca cai numa mina).
+    expect(celula('7-9')).toHaveAttribute('data-estado', 'revelada');
+
+    // Positivo: a derrota não é anunciada no primeiro clique.
+    expect(screen.getByTestId('mensagem').textContent.trim()).not.toBe('Você perdeu!');
+
+    // Positivo: nenhuma mina foi explodida.
+    expect(contarEstados().explodida).toBe(0);
+  }
+}, 30_000);
