@@ -45,7 +45,7 @@ Isso prova que os testes do cronômetro não dependem de um jeito específico de
 | 15 | Cronômetro sem limite (passa de 999) | 12 |
 | 16 | Cronômetro começa em 1 no primeiro clique | 10, 11, 33, 34 |
 
-**Resultado: 15 de 16 mutantes mortos.** O único que sobreviveu é equivalente.
+**Resultado: 15 de 16 mutantes mortos:** 14 sempre e 1 (o nº 3) por probabilidade. O único que sobreviveu é equivalente.
 
 - **Mutante 7 é equivalente.** O número só aparece em célula **sem mina**, e aí incluir a própria célula na contagem soma 0. Nenhum teste pela interface consegue distinguir os dois comportamentos, então não há o que corrigir nos testes.
 - **Mutante 3 é morto por probabilidade.** O TC-CM-09 joga 10 partidas sorteadas; o mutante só aparece quando o sorteio põe mina em `7-9` (40/252 ≈ 16% por partida). A chance de matar numa rodada é 1 − (212/252)^10 ≈ 82%. Medido: **14 de 20 rodadas** mataram. Não dá para melhorar isso sem fixar o sorteio, o que a seção 2 proíbe para este TC. O número de partidas é o da seção 5.
