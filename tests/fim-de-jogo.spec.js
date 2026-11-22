@@ -283,3 +283,52 @@ test('TC-CM-28 bandeira numa célula sem mina impede a vitória', async () => {
     'bandeira-errada': 0,
   });
 });
+
+// TC-CM-30 (caso adicional): nova partida depois da derrota desbloqueia o tabuleiro. A conferência
+// intermediária prova que houve derrota. Depois de "Nova partida", 1-9 volta a funcionar e as minas são as mesmas.
+test('TC-CM-30 nova partida depois da derrota', async () => {
+  const user = await abrirJogo({ minas: MINAS_PADRAO });
+  await user.click(celula('1-10'));
+
+  // Conferência intermediária: o jogo terminou em derrota.
+  expect(mensagem()).toHaveTextContent(/^Você perdeu!$/);
+  expect(celula('1-10')).toHaveAttribute('data-estado', 'explodida');
+
+  await user.click(screen.getByTestId('btn-nova-partida'));
+
+  // Positivo: logo após a nova partida, as 252 células estão ocultas.
+  expect(contarEstados()).toEqual({
+    oculta: 252,
+    revelada: 0,
+    bandeira: 0,
+    mina: 0,
+    explodida: 0,
+    'bandeira-errada': 0,
+  });
+
+  // Positivo: o contador volta a 40.
+  expect(contador()).toHaveTextContent(/^40$/);
+
+  // Positivo: a mensagem fica vazia.
+  mensagemVazia();
+
+  // Depois da nova partida, clica em 1-9: o tabuleiro está desbloqueado e mostra "2".
+  await user.click(celula('1-9'));
+
+  // Positivo: 1-9 fica revelada com "2".
+  expect(celula('1-9')).toHaveAttribute('data-estado', 'revelada');
+  expect(celula('1-9')).toHaveTextContent(/^2$/);
+
+  // Positivo: só 1-9 revelada; as outras 251 continuam ocultas (as minas são as mesmas do parâmetro).
+  expect(contarEstados()).toEqual({
+    oculta: 251,
+    revelada: 1,
+    bandeira: 0,
+    mina: 0,
+    explodida: 0,
+    'bandeira-errada': 0,
+  });
+
+  // Positivo: o jogo não terminou, então a mensagem continua vazia.
+  mensagemVazia();
+});
