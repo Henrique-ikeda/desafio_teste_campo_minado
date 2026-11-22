@@ -38,3 +38,12 @@ test('TC-CM-11 cronômetro para no fim', async () => {
   esperar(10);
   expect(cronometro()).toHaveTextContent(/^5$/);  // parou
 });
+
+test('TC-CM-12 cronômetro não passa de 999', async () => {
+  const user = await abrir();
+  await user.click(celula('1-9'));
+  esperar(1200);
+  expect(cronometro()).toHaveTextContent(/^999$/);   // nem 1000, nem 1200
+  expect(screen.getByTestId('mensagem').textContent.trim()).toBe('');  // o jogo continua
+  expect(celula('1-9')).toHaveAttribute('data-estado', 'revelada');
+});
