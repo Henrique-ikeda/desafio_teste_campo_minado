@@ -130,3 +130,35 @@ test('TC-CM-16 sem bandeira em célula revelada', async () => {
   // Positivo: o jogo não terminou, então a mensagem continua vazia.
   mensagemVazia();
 });
+
+// TC-CM-26 (caso adicional): a cascata não revela célula com bandeira. 3-3 não tem mina e fica no meio
+// do lado esquerdo, que é todo vazio/número. Pela seção 1, a bandeira continua lá e a cascata segue
+// pelas outras vizinhas: sobram 125 reveladas do lado esquerdo (126 − 3-3).
+test('TC-CM-26 cascata não revela célula com bandeira', async () => {
+  const user = await abrirJogo({ minas: MINAS_PADRAO });
+  await cliqueDireito(user, celula('3-3'));
+  await user.click(celula('1-1'));
+
+  // Positivo: 3-3 continua com bandeira (a cascata não a revelou).
+  expect(celula('3-3')).toHaveAttribute('data-estado', 'bandeira');
+
+  // Positivo: o contador continua em 39.
+  expect(contador()).toHaveTextContent(/^39$/);
+
+  // Positivo: 125 reveladas (o lado esquerdo menos 3-3), 126 ocultas (colunas 10 a 18) e 1 bandeira.
+  expect(contarEstados()).toEqual({
+    oculta: 126,
+    revelada: 125,
+    bandeira: 1,
+    mina: 0,
+    explodida: 0,
+    'bandeira-errada': 0,
+  });
+
+  // Positivo: a cascata seguiu em volta da bandeira: 1-9 mostra "2" e 3-4 está revelada.
+  expect(celula('1-9')).toHaveTextContent(/^2$/);
+  expect(celula('3-4')).toHaveAttribute('data-estado', 'revelada');
+
+  // Positivo: não houve derrota, então a mensagem continua vazia.
+  mensagemVazia();
+});
