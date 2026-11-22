@@ -241,6 +241,7 @@ Salvo quando dito outro, todos usam `?minas=MINAS_PADRAO`.
 | TC-CM-37 | Cronômetro para na derrota por duplo clique (caso adicional; tarefa A6) | Relógio falso. Clicar `1-9`; clique direito em `1-10` e em `1-8` (sem mina); esperar 3 s; duplo clique em `1-9`; esperar 10 s | Antes do duplo clique: `cronometro` = 3. Depois: `2-10` = `explodida`, "Você perdeu!", `cronometro` = 3 e continua 3 depois de mais 10 s |
 | TC-CM-38 | Duplo clique bloqueado após a derrota (caso adicional; tarefa A6) | Clicar `1-9`; clique direito em `1-10` e `2-10`; clicar `3-10` (perde); duplo clique em `1-9` | `1-8`, `2-8`, `2-9` continuam `oculta`; 211 `oculta`, 1 `revelada`, 2 `bandeira`, 37 `mina`, 1 `explodida`; `contador-minas` = 38; `mensagem` continua "Você perdeu!" |
 | TC-CM-39 | Clique esquerdo numa bandeira sem mina (caso adicional; tarefa A6) | Clique direito em `7-1`; clicar `7-1` | `7-1` continua `bandeira`; `contador-minas` = 39; as outras 251 `oculta`; `mensagem` vazia |
+| TC-CM-40 | Primeiro clique seguro em muitas partidas (parametrizado; caso adicional; tarefa A6) | Sem parâmetros. Para cada posição `7-9`, `1-1` e `14-18`: 150 jogos, cada um com o 1º clique nessa posição | Em todos os jogos: a célula clicada = `revelada` e `mensagem` diferente de "Você perdeu!" |
 
 ### Felipe — bandeiras, fim de jogo e abrir vizinhos
 
