@@ -161,3 +161,43 @@ test.each([['7-9'], ['1-1'], ['14-18']])('TC-CM-40 primeiro clique seguro em 150
     expect(mensagem().textContent.trim()).not.toBe('Você perdeu!');
   }
 }, 120_000);
+
+// TC-CM-41: "Nova partida" depois da VITÓRIA volta ao começo e desbloqueia o tabuleiro, com as mesmas minas do parâmetro.
+test('TC-CM-41 nova partida depois da vitória', async () => {
+  const user = await abrirJogo({ minas: MINAS_PADRAO });
+  await user.click(celula('1-1'));
+  await user.click(celula('1-13'));
+
+  // Conferência intermediária: o jogo terminou em vitória.
+  expect(mensagem()).toHaveTextContent(/^Você venceu!$/);
+  expect(contador()).toHaveTextContent(/^0$/);
+
+  await user.click(screen.getByTestId('btn-nova-partida'));
+
+  // Positivo: tudo volta ao começo.
+  expect(contarEstados()).toEqual({
+    oculta: 252,
+    revelada: 0,
+    bandeira: 0,
+    mina: 0,
+    explodida: 0,
+    'bandeira-errada': 0,
+  });
+  expect(contador()).toHaveTextContent(/^40$/);
+  expect(cronometro()).toHaveTextContent(/^0$/);
+  mensagemVazia();
+
+  // O tabuleiro está desbloqueado e as minas são as do parâmetro: 1-9 mostra "2".
+  await user.click(celula('1-9'));
+  expect(celula('1-9')).toHaveAttribute('data-estado', 'revelada');
+  expect(celula('1-9')).toHaveTextContent(/^2$/);
+  expect(contarEstados()).toEqual({
+    oculta: 251,
+    revelada: 1,
+    bandeira: 0,
+    mina: 0,
+    explodida: 0,
+    'bandeira-errada': 0,
+  });
+  mensagemVazia();
+});
