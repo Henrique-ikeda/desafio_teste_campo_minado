@@ -238,6 +238,7 @@ Salvo quando dito outro, todos usam `?minas=MINAS_PADRAO`.
 | TC-CM-33 | Cronômetro não começa com bandeira (caso adicional) | Relógio falso. Clique direito em `7-1`; esperar 3 s; clicar `1-9`; esperar 2 s | Depois da bandeira e dos 3 s: `7-1` = `bandeira` e `cronometro` = 0. No fim: `cronometro` = 2 |
 | TC-CM-34 | Cronômetro para na vitória (caso adicional; encosta na vitória, área do Felipe) | Relógio falso. Clicar `1-1`; esperar 4 s; clicar `1-13` (vence); esperar 10 s | `mensagem` = "Você venceu!"; `cronometro` = 4 no momento da vitória e continua 4 depois de mais 10 s |
 | TC-CM-36 | Nova partida zera, para e reinicia o cronômetro (caso adicional; tarefa A6) | Relógio falso. Clicar `1-9`; esperar 5 s; clicar `btn-nova-partida`; esperar 3 s; clicar `1-9`; esperar 2 s | Antes da nova partida: `cronometro` = 5. Logo depois: 0 e `1-9` `oculta`. Depois de 3 s sem clique: continua 0. 2 s depois do clique: 2 |
+| TC-CM-37 | Cronômetro para na derrota por duplo clique (caso adicional; tarefa A6) | Relógio falso. Clicar `1-9`; clique direito em `1-10` e em `1-8` (sem mina); esperar 3 s; duplo clique em `1-9`; esperar 10 s | Antes do duplo clique: `cronometro` = 3. Depois: `2-10` = `explodida`, "Você perdeu!", `cronometro` = 3 e continua 3 depois de mais 10 s |
 
 ### Felipe — bandeiras, fim de jogo e abrir vizinhos
 
