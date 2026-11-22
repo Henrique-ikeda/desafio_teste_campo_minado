@@ -247,6 +247,7 @@ Salvo quando dito outro, todos usam `?minas=MINAS_PADRAO`.
 | TC-CM-43 | Número em canto e na borda (parametrizado; caso adicional; tarefa A6) | 4 jogos, cada um com 40 minas no parâmetro `minas`: base de 32 (colunas 17 e 18 inteiras + coluna 16 das linhas 1–4) + todas as vizinhas da célula + o resto em `5-16`, `6-16`, …. Células: `1-1` (vizinhas `1-2`, `2-1`, `2-2`), `14-1` (`13-1`, `13-2`, `14-2`), `7-1` (`6-1`, `6-2`, `7-2`, `8-1`, `8-2`), `14-9` (`13-8`, `13-9`, `13-10`, `14-8`, `14-10`). Clicar a célula | Texto "3", "3", "5", "5", respectivamente; só ela é revelada (251 `oculta`) |
 | TC-CM-44 | Cascata não revela bandeira em célula com número (caso adicional; tarefa A6) | Clique direito em `1-9` (sem mina, número 2); clicar `1-1` | `1-9` continua `bandeira`; 125 `revelada`, 126 `oculta`, 1 `bandeira`; `2-9` = "3"; `contador-minas` = 39; `mensagem` vazia |
 | TC-CM-45 | Cascata do lado direito a partir do meio (caso adicional; tarefa A6) | Clicar `7-13` | As mesmas 86 células `revelada` do TC-CM-08 (colunas 11–16, `13-17` e `14-17`); `7-13` sem texto; `1-10`, `1-17` e `1-9` continuam `oculta`; `mensagem` vazia |
+| TC-CM-46 | Nova partida mantém as 40 minas do parâmetro (caso adicional; tarefa A6) | Clicar `1-1`; clicar `btn-nova-partida`; clicar `7-10` | `7-10` = `explodida`; "Você perdeu!"; as células `explodida` + `mina` são exatamente as 40 de `MINAS_PADRAO`; 212 `oculta` |
 
 ### Felipe — bandeiras, fim de jogo e abrir vizinhos
 
