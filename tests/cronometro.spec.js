@@ -1,7 +1,7 @@
 // Testes do cronômetro (tarefa A5). Contrato: seções 1, 3 e 5 do PLANEJAMENTO.md.
 // Relógio falso só neste arquivo: o relógio falso moderno do Jest controla setTimeout/setInterval E Date,
 // então estes testes valem para uma implementação por setInterval ou por Date.now().
-import { abrirJogo, celula, screen, MINAS_PADRAO } from './helpers.js';
+import { abrirJogo, celula, cliqueDireito, screen, MINAS_PADRAO } from './helpers.js';
 
 beforeEach(() => {
   jest.useFakeTimers();
@@ -46,4 +46,15 @@ test('TC-CM-12 cronômetro não passa de 999', async () => {
   expect(cronometro()).toHaveTextContent(/^999$/);   // nem 1000, nem 1200
   expect(screen.getByTestId('mensagem').textContent.trim()).toBe('');  // o jogo continua
   expect(celula('1-9')).toHaveAttribute('data-estado', 'revelada');
+});
+
+test('TC-CM-33 cronômetro não começa com bandeira', async () => {
+  const user = await abrir();
+  await cliqueDireito(user, celula('7-1'));
+  expect(celula('7-1')).toHaveAttribute('data-estado', 'bandeira');
+  esperar(3);
+  expect(cronometro()).toHaveTextContent(/^0$/);   // bandeira não revela: não conta
+  await user.click(celula('1-9'));
+  esperar(2);
+  expect(cronometro()).toHaveTextContent(/^2$/);
 });
