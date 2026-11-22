@@ -144,3 +144,39 @@ test('TC-CM-25 abrir vizinhos com bandeira errada', async () => {
   expect(e['bandeira-errada']).toBe(1);
   expect(e.oculta + e.revelada).toBe(211);
 });
+
+// TC-CM-27 (caso adicional): vitória pelo duplo clique. Abrir 1-13 (86 à direita) e revelar 1-9 dá 87.
+// Com as bandeiras certas em 1-10 e 2-10, o duplo clique em 1-9 abre 1-8 (vazia), que abre o resto do
+// lado esquerdo (126 com 1-9 incluída): 86 + 126 = 212 = vitória.
+test('TC-CM-27 vitória pelo duplo clique', async () => {
+  const user = await abrirJogo({ minas: MINAS_PADRAO });
+  await user.click(celula('1-13'));
+  await user.click(celula('1-9'));
+  await cliqueDireito(user, celula('1-10'));
+  await cliqueDireito(user, celula('2-10'));
+
+  // Conferência intermediária: 87 reveladas (86 + 1-9) e o jogo ainda não terminou.
+  expect(contarEstados().revelada).toBe(87);
+  mensagemVazia();
+
+  await user.dblClick(celula('1-9'));
+
+  // Positivo: a vitória é anunciada.
+  expect(mensagem()).toHaveTextContent(/^Você venceu!$/);
+
+  // Positivo: o contador vai a 0.
+  expect(contador()).toHaveTextContent(/^0$/);
+
+  // Positivo: as 40 bandeiras são exatamente as minas de MINAS_PADRAO.
+  expect(posicoesNoEstado('bandeira')).toEqual([...LISTA_MINAS_PADRAO].sort());
+
+  // Positivo: 212 reveladas, 40 bandeiras, nada oculto, mina, explodida ou bandeira errada.
+  expect(contarEstados()).toEqual({
+    oculta: 0,
+    revelada: 212,
+    bandeira: 40,
+    mina: 0,
+    explodida: 0,
+    'bandeira-errada': 0,
+  });
+});
