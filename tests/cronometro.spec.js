@@ -53,6 +53,7 @@ test('TC-CM-33 cronômetro não começa com bandeira', async () => {
   await cliqueDireito(user, celula('7-1'));
   expect(celula('7-1')).toHaveAttribute('data-estado', 'bandeira');
   esperar(3);
+  expect(celula('7-1')).toHaveAttribute('data-estado', 'bandeira'); // a bandeira continua lá
   expect(cronometro()).toHaveTextContent(/^0$/);   // bandeira não revela: não conta
   await user.click(celula('1-9'));
   esperar(2);
