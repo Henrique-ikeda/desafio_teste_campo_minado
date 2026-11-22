@@ -45,6 +45,7 @@ test('TC-CM-23 abrir vizinhos com bandeiras certas', async () => {
   expect(celula('1-8')).toHaveAttribute('data-estado', 'revelada');
   expect(celula('2-8')).toHaveAttribute('data-estado', 'revelada');
   expect(celula('2-9')).toHaveAttribute('data-estado', 'revelada');
+  expect(celula('2-9')).toHaveTextContent(/^3$/); // vizinha com número: 1-10, 2-10 e 3-10 são minas
 
   // Positivo: as duas bandeiras certas (1-10 e 2-10) continuam no lugar.
   expect(celula('1-10')).toHaveAttribute('data-estado', 'bandeira');
@@ -110,9 +111,10 @@ test('TC-CM-24 abrir vizinhos com bandeiras de menos', async () => {
 
 // TC-CM-25: abrir vizinhos com bandeira errada. 1-9 tem 2 bandeiras em volta (1-10 certa, 1-8 errada),
 // então o duplo clique tenta revelar as vizinhas sem bandeira: 2-8, 2-9 e 2-10. 2-10 é mina e explode.
-// NÃO conferimos o estado de 2-8 nem de 2-9, nem o total de 'revelada' e 'oculta': a seção 1 não
-// define a ordem em que as vizinhas são reveladas (2-8 é vazia e abre cascata). Por isso só conferimos
-// o que vale em qualquer ordem. O contador-minas também não é conferido (ver TC-CM-18).
+// NÃO conferimos o estado de 2-8 nem de 2-9, nem quantas células ficam 'revelada' ou 'oculta' (só a soma das
+// duas): a seção 1 não define a ordem em que as vizinhas são reveladas (2-8 é vazia e abre cascata). Por isso
+// só conferimos o que vale em qualquer ordem. O contador-minas também não é conferido: a seção 5 não o pede e a
+// spec não diz se a bandeira errada (1-8) ainda conta como bandeira colocada (mesma dúvida do TC-CM-18).
 test('TC-CM-25 abrir vizinhos com bandeira errada', async () => {
   const user = await abrirJogo({ minas: MINAS_PADRAO });
   await user.click(celula('1-9'));
