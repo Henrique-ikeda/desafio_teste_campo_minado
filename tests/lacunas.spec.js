@@ -277,3 +277,29 @@ test.each([
   expect(contarEstados()).toEqual({ oculta: 251, revelada: 1, bandeira: 0, mina: 0, explodida: 0, 'bandeira-errada': 0 });
   mensagemVazia();
 });
+
+// TC-CM-44: a cascata não revela uma célula com bandeira mesmo quando ela tem NÚMERO (o TC-CM-26 usa uma célula vazia).
+test('TC-CM-44 cascata não revela bandeira em célula com número', async () => {
+  const user = await abrirJogo({ minas: MINAS_PADRAO });
+  await cliqueDireito(user, celula('1-9')); // 1-9 não é mina e mostraria "2"
+  await user.click(celula('1-1'));
+
+  // Positivo: 1-9 continua com bandeira.
+  expect(celula('1-9')).toHaveAttribute('data-estado', 'bandeira');
+
+  // Positivo: o contador continua em 39.
+  expect(contador()).toHaveTextContent(/^39$/);
+
+  // Positivo: 125 reveladas (o lado esquerdo menos 1-9), 126 ocultas e 1 bandeira; a cascata seguiu pelas outras vizinhas.
+  expect(contarEstados()).toEqual({
+    oculta: 126,
+    revelada: 125,
+    bandeira: 1,
+    mina: 0,
+    explodida: 0,
+    'bandeira-errada': 0,
+  });
+  expect(celula('1-8')).toHaveAttribute('data-estado', 'revelada');
+  expect(celula('2-9')).toHaveTextContent(/^3$/);
+  mensagemVazia();
+});
