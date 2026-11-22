@@ -16,7 +16,7 @@ Campo minado em tabuleiro **18 × 14** com **40 minas**: **casos de teste de int
 - **Clique esquerdo** numa célula oculta **revela** a célula:
   - se for **mina**: o jogador perde;
   - se tiver minas vizinhas: mostra o **número** de minas vizinhas (1 a 8);
-  - se não tiver nenhuma mina vizinha (célula **vazia**): não mostra número e revela sozinha todas as vizinhas, em **cascata**, até chegar nas células com número. A cascata nunca revela mina.
+  - se não tiver nenhuma mina vizinha (célula **vazia**): não mostra número e revela sozinha todas as vizinhas, em **cascata**, até chegar nas células com número. A cascata nunca revela mina nem célula com bandeira (a bandeira continua lá e a cascata segue pelas outras vizinhas).
 - Clicar numa célula já revelada não muda nada.
 - **Clique direito** numa célula oculta põe uma **bandeira**; outro clique direito tira. Célula com bandeira não é revelada pelo clique esquerdo. Não dá para pôr bandeira em célula revelada.
 - **Contador de minas** = 40 − número de bandeiras colocadas.
@@ -254,6 +254,7 @@ Salvo quando dito outro, todos usam `?minas=MINAS_PADRAO`.
 | TC-CM-23 | Abrir vizinhos com bandeiras certas | Clicar `1-9`; clique direito em `1-10` e `2-10`; duplo clique em `1-9` | `1-8`, `2-8`, `2-9` = `revelada`; como `1-8` é vazia, a cascata abre o lado esquerdo todo (126 `revelada`); `1-10` e `2-10` continuam `bandeira`; `mensagem` vazia |
 | TC-CM-24 | Abrir vizinhos com bandeiras de menos | Clicar `1-9`; clique direito só em `1-10`; duplo clique em `1-9` | Nada abre: `1-8`, `2-8`, `2-9` continuam `oculta`; `1-9` continua "2"; `contador-minas` = 39; `mensagem` vazia |
 | TC-CM-25 | Abrir vizinhos com bandeira errada | Clicar `1-9`; clique direito em `1-10` e em `1-8` (sem mina); duplo clique em `1-9` | `2-10` = `explodida`; `1-8` = `bandeira-errada`; `mensagem` = "Você perdeu!" |
+| TC-CM-26 | Cascata não revela célula com bandeira (caso adicional) | Clique direito em `3-3` (sem mina); clicar `1-1` | `3-3` continua `bandeira`; 125 células `revelada` (o lado esquerdo menos `3-3`); `contador-minas` = 39; `mensagem` vazia |
 
 ## 6. Fluxo de trabalho no Git
 
