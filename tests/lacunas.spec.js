@@ -146,3 +146,18 @@ test('TC-CM-39 clique esquerdo numa bandeira sem mina', async () => {
   // Positivo: o jogo não terminou.
   mensagemVazia();
 });
+
+// TC-CM-40: sem parâmetro (sorteio), o 1º clique nunca é mina. Muitas partidas por posição, para o falso passe de um jogo sem
+// a proteção ser desprezível (o TC-CM-09 faz 10 partidas e deixa passar ~18% das vezes). Só confere propriedade, nunca posições de mina.
+test.each([['7-9'], ['1-1'], ['14-18']])('TC-CM-40 primeiro clique seguro em 150 partidas: %s', async (pos) => {
+  for (let jogo = 1; jogo <= 150; jogo++) {
+    const user = await abrirJogo();
+    await user.click(celula(pos));
+
+    // Positivo: o 1º clique revela a célula (nunca explode).
+    expect(celula(pos)).toHaveAttribute('data-estado', 'revelada');
+
+    // Positivo: a derrota não é anunciada.
+    expect(mensagem().textContent.trim()).not.toBe('Você perdeu!');
+  }
+}, 120_000);
