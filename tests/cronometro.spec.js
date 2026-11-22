@@ -26,3 +26,15 @@ test('TC-CM-10 cronômetro começa no 1º clique', async () => {
   expect(cronometro()).toHaveTextContent(/^3$/);
   expect(celula('1-9')).toHaveAttribute('data-estado', 'revelada');
 });
+
+test('TC-CM-11 cronômetro para no fim', async () => {
+  const user = await abrir();
+  await user.click(celula('1-9'));
+  esperar(5);
+  expect(cronometro()).toHaveTextContent(/^5$/);
+  await user.click(celula('1-10'));            // 1-10 é mina: perde
+  expect(screen.getByTestId('mensagem')).toHaveTextContent(/^Você perdeu!$/);
+  expect(cronometro()).toHaveTextContent(/^5$/);  // no momento da derrota
+  esperar(10);
+  expect(cronometro()).toHaveTextContent(/^5$/);  // parou
+});
