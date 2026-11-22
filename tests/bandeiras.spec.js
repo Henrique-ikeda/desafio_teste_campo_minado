@@ -42,3 +42,36 @@ test('TC-CM-13 pôr bandeira', async () => {
   // Positivo: o jogo não terminou, então a mensagem continua vazia.
   mensagemVazia();
 });
+
+// TC-CM-14: clique direito numa bandeira tira a bandeira. A conferência intermediária prova que
+// o 1º clique pôs a bandeira (senão o teste passaria com um jogo que ignora o clique direito).
+test('TC-CM-14 tirar bandeira', async () => {
+  const user = await abrirJogo({ minas: MINAS_PADRAO });
+  await cliqueDireito(user, celula('7-1'));
+
+  // Conferência intermediária: o 1º clique pôs a bandeira em 7-1 e o contador está em 39.
+  expect(celula('7-1')).toHaveAttribute('data-estado', 'bandeira');
+  expect(contador()).toHaveTextContent(/^39$/);
+
+  // Segundo clique direito em 7-1 tira a bandeira.
+  await cliqueDireito(user, celula('7-1'));
+
+  // Positivo: 7-1 volta a ficar oculta.
+  expect(celula('7-1')).toHaveAttribute('data-estado', 'oculta');
+
+  // Positivo: o contador volta a 40.
+  expect(contador()).toHaveTextContent(/^40$/);
+
+  // Positivo: as 252 células estão ocultas, sem bandeiras.
+  expect(contarEstados()).toEqual({
+    oculta: 252,
+    revelada: 0,
+    bandeira: 0,
+    mina: 0,
+    explodida: 0,
+    'bandeira-errada': 0,
+  });
+
+  // Positivo: o jogo não terminou, então a mensagem continua vazia.
+  mensagemVazia();
+});
