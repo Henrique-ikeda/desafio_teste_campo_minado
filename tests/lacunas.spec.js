@@ -247,3 +247,33 @@ test.each([
     });
   }
 });
+
+// TC-CM-43: número em canto (3 vizinhas), na borda esquerda e na borda de baixo (5 vizinhas): 40 minas, sendo 32 de base
+// (colunas 17 e 18 inteiras + coluna 16 das linhas 1–4), TODAS as vizinhas da célula clicada e o resto na coluna 16, longe dela.
+const BASE_32 = [
+  ...Array.from({ length: 14 }, (_, i) => `${i + 1}-17`),
+  ...Array.from({ length: 14 }, (_, i) => `${i + 1}-18`),
+  ...Array.from({ length: 4 }, (_, i) => `${i + 1}-16`),
+];
+const REPOR_NA_COLUNA_16 = Array.from({ length: 10 }, (_, i) => `${i + 5}-16`);
+test.each([
+  ['1-1', ['1-2', '2-1', '2-2']],
+  ['14-1', ['13-1', '13-2', '14-2']],
+  ['7-1', ['6-1', '6-2', '7-2', '8-1', '8-2']],
+  ['14-9', ['13-8', '13-9', '13-10', '14-8', '14-10']],
+])('TC-CM-43 número em canto ou borda: %s mostra o total das vizinhas', async (pos, vizinhas) => {
+  const minas = [...BASE_32, ...vizinhas, ...REPOR_NA_COLUNA_16.slice(0, 8 - vizinhas.length)];
+  // Sanidade do próprio cenário: erro aqui é erro do teste (o verificador acusa como "motivo errado"), não do jogo.
+  if (new Set(minas).size !== 40) throw new Error(`cenário do TC-CM-43 com ${new Set(minas).size} minas, e não 40`);
+
+  const user = await abrirJogo({ minas: minas.join(',') });
+  await user.click(celula(pos));
+
+  // Positivo: a célula fica revelada com o número de minas vizinhas.
+  expect(celula(pos)).toHaveAttribute('data-estado', 'revelada');
+  expect(celula(pos)).toHaveTextContent(new RegExp(`^${vizinhas.length}$`));
+
+  // Positivo: só ela revelada; as outras 251 continuam ocultas.
+  expect(contarEstados()).toEqual({ oculta: 251, revelada: 1, bandeira: 0, mina: 0, explodida: 0, 'bandeira-errada': 0 });
+  mensagemVazia();
+});
