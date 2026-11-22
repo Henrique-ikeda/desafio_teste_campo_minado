@@ -303,3 +303,25 @@ test('TC-CM-44 cascata não revela bandeira em célula com número', async () =>
   expect(celula('2-9')).toHaveTextContent(/^3$/);
   mensagemVazia();
 });
+
+// TC-CM-45: cascata do lado direito a partir de uma célula do meio e de outra linha (o TC-CM-08 parte de 1-13, na linha 1).
+test('TC-CM-45 cascata do lado direito a partir de 7-13', async () => {
+  const user = await abrirJogo({ minas: MINAS_PADRAO });
+  await user.click(celula('7-13'));
+
+  // Positivo: 86 reveladas e 166 ocultas; nenhuma mina revelada.
+  const e = contarEstados();
+  expect(e.revelada).toBe(86);
+  expect(e.oculta).toBe(166);
+  expect(e.mina + e.explodida).toBe(0);
+
+  // Positivo: o conjunto revelado é exatamente as colunas 11 a 16, mais 13-17 e 14-17.
+  expect(posicoesNoEstado('revelada')).toEqual([...posicoesDasColunas(11, 16), '13-17', '14-17'].sort());
+
+  // Positivo: 7-13 é vazia; 1-10 e 1-17 (minas) e 1-9 (outro lado da parede) continuam ocultas.
+  expect(celula('7-13').textContent.trim()).toBe('');
+  expect(celula('1-10')).toHaveAttribute('data-estado', 'oculta');
+  expect(celula('1-17')).toHaveAttribute('data-estado', 'oculta');
+  expect(celula('1-9')).toHaveAttribute('data-estado', 'oculta');
+  mensagemVazia();
+});
