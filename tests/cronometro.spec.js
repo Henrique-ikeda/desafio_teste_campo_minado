@@ -58,3 +58,14 @@ test('TC-CM-33 cronômetro não começa com bandeira', async () => {
   esperar(2);
   expect(cronometro()).toHaveTextContent(/^2$/);
 });
+
+test('TC-CM-34 cronômetro para na vitória', async () => {
+  const user = await abrir();
+  await user.click(celula('1-1'));      // abre o lado esquerdo (126)
+  esperar(4);
+  await user.click(celula('1-13'));     // abre o lado direito (86): 212 = vitória
+  expect(screen.getByTestId('mensagem')).toHaveTextContent(/^Você venceu!$/);
+  expect(cronometro()).toHaveTextContent(/^4$/);  // no momento da vitória
+  esperar(10);
+  expect(cronometro()).toHaveTextContent(/^4$/);  // parou
+});
