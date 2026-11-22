@@ -196,6 +196,7 @@ Cada integrante é **dono de arquivos de teste diferentes** (coluna "Arquivos").
 | **A3** Revelar e números | `henrique/a3-revelar` | tests/tabuleiro.spec.js | TC-CM-04, 05, 06 |
 | **A4** Cascata e primeiro clique | `henrique/a4-cascata` | tests/tabuleiro.spec.js | TC-CM-07, 08, 09 |
 | **A5** Cronômetro | `henrique/a5-cronometro` | tests/cronometro.spec.js | TC-CM-10, 11, 12 |
+| **A6** Lacunas de cobertura (casos adicionais da auditoria) | `henrique/a6-lacunas` | tests/lacunas.spec.js | TC-CM-36 em diante (faixa 36–55) |
 
 ### Felipe (tarefas F)
 
@@ -209,7 +210,7 @@ Cada integrante é **dono de arquivos de teste diferentes** (coluna "Arquivos").
 
 ### IDs reservados para casos de teste adicionais
 
-Para os dois poderem acrescentar casos sem colidir: **TC-CM-26 a TC-CM-30** ficam para o Felipe; **TC-CM-31 em diante** ficam para o Henrique. Cada caso novo entra na seção 5 (commit `docs:` antes do `test:`), na [matriz de cobertura](docs/MATRIZ-COBERTURA.md) e na tabela do README, no mesmo PR da tarefa.
+Para os dois poderem acrescentar casos sem colidir: **TC-CM-26 a TC-CM-30** ficam para o Felipe; **TC-CM-31 em diante** ficam para o Henrique. A faixa **TC-CM-36 a TC-CM-55** está reservada aos casos de lacunas da tarefa A6; se o Felipe precisar de IDs novos, usa **TC-CM-56 em diante** (combinar antes com o Henrique). Cada caso novo entra na seção 5 (commit `docs:` antes do `test:`), na [matriz de cobertura](docs/MATRIZ-COBERTURA.md) e na tabela do README, no mesmo PR da tarefa.
 
 ## 5. Casos de teste (interface)
 
