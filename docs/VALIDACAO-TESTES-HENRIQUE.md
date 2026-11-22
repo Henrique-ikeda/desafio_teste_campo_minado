@@ -61,3 +61,28 @@ Nenhuma regra foi inventada; os testes seguem o texto atual.
 5. **Duplo clique ou clique do meio numa célula oculta:** não especificado.
 6. **Primeiro clique seguro protege também as vizinhas?** A spec só garante a própria célula; os testes não assumem mais que isso (TC-CM-09 e 35 clicam `7-9` e não conferem as vizinhas).
 7. **Prazo:** o desafios.md diz "22/11/2026 às 23:99", que não é um horário válido. Consideramos 23:59.
+
+## Lacunas fechadas (A6)
+
+A suíte antiga (TC-CM-01 a 35) deixava 13 dos 14 mutantes abaixo passar. Os TC-CM-36 a 46 (`tests/lacunas.spec.js`) matam todos eles. Referência e mutantes ficaram fora do repositório.
+
+| Mutante | Antes (suíte antiga) | Depois (TC que mata) |
+|---|---|---|
+| nova partida não zera o cronômetro | sobrevive | TC-36 |
+| nova partida não para o cronômetro | sobrevive | TC-36 |
+| nova partida não reinicia o cronômetro no 1º clique | sobrevive | TC-36 |
+| derrota por duplo clique não para o cronômetro | sobrevive | TC-37 |
+| duplo clique abre vizinhas depois da derrota | sobrevive | TC-38 |
+| clique esquerdo numa bandeira sem mina a revela | sobrevive | TC-39 |
+| 1º clique pode cair em mina (sorteio) | 1 em ~5 rodadas | TC-40 (150 partidas por posição) |
+| nova partida depois da vitória não funciona | sobrevive | TC-41 |
+| duplo clique só funciona com número 2 | sobrevive | TC-42 |
+| contagem errada num canto | sobrevive | TC-43 |
+| contagem errada na coluna 1 | sobrevive | TC-43 |
+| cascata revela bandeira em célula com número | sobrevive | TC-44 |
+| cascata do lado direito só parte de 1-x | sobrevive | TC-45 |
+| nova partida perde uma das minas do parâmetro | sobrevive | TC-46 |
+
+**Resultado:** suíte inteira (59 testes) 59/59 contra a referência, nas 4 variantes (cronômetro `setInterval` × `Date.now()`; duplo clique em ordem leitura × inversa), 3 repetições seguidas, e TC-02/09/35/40 sorteados 50/50 vezes.
+
+**Ambiguidade que os novos testes assumem:** TC-38 conta a bandeira certa em mina como `bandeira` depois da derrota (igual ao TC-18). A seção 1 diz só que "as outras minas são mostradas". Se a dupla decidir que a bandeira certa vira `mina`, TC-38 e TC-18 precisam mudar juntos.

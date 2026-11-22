@@ -196,6 +196,7 @@ Cada integrante é **dono de arquivos de teste diferentes** (coluna "Arquivos").
 | **A3** Revelar e números | `henrique/a3-revelar` | tests/tabuleiro.spec.js | TC-CM-04, 05, 06 |
 | **A4** Cascata e primeiro clique | `henrique/a4-cascata` | tests/tabuleiro.spec.js | TC-CM-07, 08, 09 |
 | **A5** Cronômetro | `henrique/a5-cronometro` | tests/cronometro.spec.js | TC-CM-10, 11, 12 |
+| **A6** Lacunas de cobertura (casos adicionais da auditoria) | `henrique/a6-lacunas` | tests/lacunas.spec.js | TC-CM-36 em diante (faixa 36–55) |
 
 ### Felipe (tarefas F)
 
@@ -209,7 +210,7 @@ Cada integrante é **dono de arquivos de teste diferentes** (coluna "Arquivos").
 
 ### IDs reservados para casos de teste adicionais
 
-Para os dois poderem acrescentar casos sem colidir: **TC-CM-26 a TC-CM-30** ficam para o Felipe; **TC-CM-31 em diante** ficam para o Henrique. Cada caso novo entra na seção 5 (commit `docs:` antes do `test:`), na [matriz de cobertura](docs/MATRIZ-COBERTURA.md) e na tabela do README, no mesmo PR da tarefa.
+Para os dois poderem acrescentar casos sem colidir: **TC-CM-26 a TC-CM-30** ficam para o Felipe; **TC-CM-31 em diante** ficam para o Henrique. A faixa **TC-CM-36 a TC-CM-55** está reservada aos casos de lacunas da tarefa A6; se o Felipe precisar de IDs novos, usa **TC-CM-56 em diante** (combinar antes com o Henrique). Cada caso novo entra na seção 5 (commit `docs:` antes do `test:`), na [matriz de cobertura](docs/MATRIZ-COBERTURA.md) e na tabela do README, no mesmo PR da tarefa.
 
 ## 5. Casos de teste (interface)
 
@@ -233,9 +234,20 @@ Salvo quando dito outro, todos usam `?minas=MINAS_PADRAO`.
 | TC-CM-12 | Cronômetro não passa de 999 | Relógio falso. Clicar `1-9`; esperar 1200 s | `cronometro` = 999 |
 | TC-CM-31 | Número de minas vizinhas de 5 a 8 (parametrizado; caso adicional) | 4 jogos, cada um com 40 minas no parâmetro `minas`: base de 32 (colunas 17 e 18 inteiras + coluna 16 das linhas 1–4) + as 8 vizinhas de `2-2` (`1-1`, `1-2`, `1-3`, `2-1`, `2-3`, `3-1`, `3-2`, `3-3`). Para "7", "6" e "5", tirar `3-3`; `3-3` e `3-2`; `3-3`, `3-2` e `3-1`, pondo no lugar `5-16`; `5-16` e `6-16`; `5-16`, `6-16` e `7-16`. Clicar `2-2` | Texto "8", "7", "6", "5", respectivamente; só `2-2` é revelada (251 `oculta`) |
 | TC-CM-32 | Cascata a partir do meio e de outro canto (parametrizado; caso adicional) | Em jogos separados, clicar `7-5` e `14-1` | Em cada um: as mesmas 126 células `revelada` (colunas 1–9); `1-9` = "2"; a coluna 10 inteira continua `oculta`; `mensagem` vazia |
-| TC-CM-35 | Primeiro clique seguro mantém 40 minas (caso adicional) | Sem parâmetros. Clicar `7-9`; depois clicar as células ocultas em ordem (`1-1`, `1-2`, …) até perder | Depois do 1º clique: `7-9` = `revelada`. No fim: `mensagem` = "Você perdeu!"; exatamente 1 `explodida` e `explodida` + `mina` = **40** (a mina foi realocada, não apagada) |
 | TC-CM-33 | Cronômetro não começa com bandeira (caso adicional) | Relógio falso. Clique direito em `7-1`; esperar 3 s; clicar `1-9`; esperar 2 s | Depois da bandeira e dos 3 s: `7-1` = `bandeira` e `cronometro` = 0. No fim: `cronometro` = 2 |
 | TC-CM-34 | Cronômetro para na vitória (caso adicional; encosta na vitória, área do Felipe) | Relógio falso. Clicar `1-1`; esperar 4 s; clicar `1-13` (vence); esperar 10 s | `mensagem` = "Você venceu!"; `cronometro` = 4 no momento da vitória e continua 4 depois de mais 10 s |
+| TC-CM-35 | Primeiro clique seguro mantém 40 minas (caso adicional) | Sem parâmetros. Clicar `7-9`; depois clicar as células ocultas em ordem (`1-1`, `1-2`, …) até perder | Depois do 1º clique: `7-9` = `revelada`. No fim: `mensagem` = "Você perdeu!"; exatamente 1 `explodida` e `explodida` + `mina` = **40** (a mina foi realocada, não apagada) |
+| TC-CM-36 | Nova partida zera, para e reinicia o cronômetro (caso adicional; tarefa A6) | Relógio falso. Clicar `1-9`; esperar 5 s; clicar `btn-nova-partida`; esperar 3 s; clicar `1-9`; esperar 2 s | Antes da nova partida: `cronometro` = 5. Logo depois: 0 e `1-9` `oculta`. Depois de 3 s sem clique: continua 0. 2 s depois do clique: 2 |
+| TC-CM-37 | Cronômetro para na derrota por duplo clique (caso adicional; tarefa A6) | Relógio falso. Clicar `1-9`; clique direito em `1-10` e em `1-8` (sem mina); esperar 3 s; duplo clique em `1-9`; esperar 10 s | Antes do duplo clique: `cronometro` = 3. Depois: `2-10` = `explodida`, "Você perdeu!", `cronometro` = 3 e continua 3 depois de mais 10 s |
+| TC-CM-38 | Duplo clique bloqueado após a derrota (caso adicional; tarefa A6) | Clicar `1-9`; clique direito em `1-10` e `2-10`; clicar `3-10` (perde); duplo clique em `1-9` | `1-8`, `2-8`, `2-9` continuam `oculta`; 211 `oculta`, 1 `revelada`, 2 `bandeira`, 37 `mina`, 1 `explodida`; `contador-minas` = 38; `mensagem` continua "Você perdeu!" |
+| TC-CM-39 | Clique esquerdo numa bandeira sem mina (caso adicional; tarefa A6) | Clique direito em `7-1`; clicar `7-1` | `7-1` continua `bandeira`; `contador-minas` = 39; as outras 251 `oculta`; `mensagem` vazia |
+| TC-CM-40 | Primeiro clique seguro em muitas partidas (parametrizado; caso adicional; tarefa A6) | Sem parâmetros. Para cada posição `7-9`, `1-1` e `14-18`: 150 jogos, cada um com o 1º clique nessa posição | Em todos os jogos: a célula clicada = `revelada` e `mensagem` diferente de "Você perdeu!" |
+| TC-CM-41 | Nova partida depois da vitória (caso adicional; tarefa A6) | Clicar `1-1` e `1-13` (vence); clicar `btn-nova-partida`; clicar `1-9` | Logo após a nova partida: 252 `oculta`, `contador-minas` = 40, `cronometro` = 0, `mensagem` vazia. Depois: `1-9` = `revelada` com "2" e só ela revelada |
+| TC-CM-42 | Abrir vizinhos num número 3 (parametrizado; caso adicional; tarefa A6) | Clicar `2-9` ("3"); clique direito em (a) `1-10`, `2-10`, `3-10` ou (b) só `1-10`, `2-10`; duplo clique em `2-9` | (a) abre as vizinhas e a cascata: 126 `revelada`, 3 `bandeira`, 123 `oculta`, `contador-minas` = 37. (b) nada abre: 1 `revelada`, 2 `bandeira`, 249 `oculta`, `contador-minas` = 38. Nos dois: `2-9` continua "3", `mensagem` vazia |
+| TC-CM-43 | Número em canto e na borda (parametrizado; caso adicional; tarefa A6) | 4 jogos, cada um com 40 minas no parâmetro `minas`: base de 32 (colunas 17 e 18 inteiras + coluna 16 das linhas 1–4) + todas as vizinhas da célula + o resto em `5-16`, `6-16`, …. Células: `1-1` (vizinhas `1-2`, `2-1`, `2-2`), `14-1` (`13-1`, `13-2`, `14-2`), `7-1` (`6-1`, `6-2`, `7-2`, `8-1`, `8-2`), `14-9` (`13-8`, `13-9`, `13-10`, `14-8`, `14-10`). Clicar a célula | Texto "3", "3", "5", "5", respectivamente; só ela é revelada (251 `oculta`) |
+| TC-CM-44 | Cascata não revela bandeira em célula com número (caso adicional; tarefa A6) | Clique direito em `1-9` (sem mina, número 2); clicar `1-1` | `1-9` continua `bandeira`; 125 `revelada`, 126 `oculta`, 1 `bandeira`; `2-9` = "3"; `contador-minas` = 39; `mensagem` vazia |
+| TC-CM-45 | Cascata do lado direito a partir do meio (caso adicional; tarefa A6) | Clicar `7-13` | As mesmas 86 células `revelada` do TC-CM-08 (colunas 11–16, `13-17` e `14-17`); `7-13` sem texto; `1-10`, `1-17` e `1-9` continuam `oculta`; `mensagem` vazia |
+| TC-CM-46 | Nova partida mantém as 40 minas do parâmetro (caso adicional; tarefa A6) | Clicar `1-1`; clicar `btn-nova-partida`; clicar `7-10` | `7-10` = `explodida`; "Você perdeu!"; as células `explodida` + `mina` são exatamente as 40 de `MINAS_PADRAO`; 212 `oculta` |
 
 ### Felipe — bandeiras, fim de jogo e abrir vizinhos
 

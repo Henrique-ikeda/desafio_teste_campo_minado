@@ -19,7 +19,7 @@ Regras completas, contrato da tela e divisão das tarefas: [PLANEJAMENTO.md](PLA
 
 | Nome | RA | GitHub | Parte no trabalho |
 |---|---|---|---|
-| Henrique Kendi Ikeda | 24039456-2 | [Henrique-ikeda](https://github.com/Henrique-ikeda) | Tarefas A1–A5: estrutura do projeto, verificador e 17 casos de teste (TC-CM-01 a 12 e 31 a 35: tabuleiro, revelar, cascata, cronômetro) |
+| Henrique Kendi Ikeda | 24039456-2 | [Henrique-ikeda](https://github.com/Henrique-ikeda) | Tarefas A1–A6: estrutura do projeto, verificador e 28 casos de teste (TC-CM-01 a 12 e 31 a 46: tabuleiro, revelar, cascata, cronômetro e lacunas de cobertura) |
 | Felipe Galeti Gôngora | 24036480-2 | [FGaleti](https://github.com/FGaleti) | Tarefas F1–F5: CI, README e 18 casos de teste (TC-CM-13 a 30: bandeiras, derrota, vitória, nova partida, abrir vizinhos) |
 
 As contribuições de cada um aparecem em **Insights → Contributors** e nos commits.
@@ -49,9 +49,9 @@ npx jest tests/<arquivo>.spec.js -t "TC-CM-NN"   # um caso só
 - **Rastreabilidade:** cada teste tem no título o ID do caso (`TC-CM-NN`), o mesmo da tabela abaixo e da seção 5 do PLANEJAMENTO.md. A [matriz de cobertura](docs/MATRIZ-COBERTURA.md) liga cada regra do jogo aos seus casos.
 - **Metodologia:** TDD, um caso de teste por vez: escrever, rodar, ver falhar pelo motivo certo e fazer o commit `test:`. Uso de IA documentado em [docs/TDD-COM-IA.md](docs/TDD-COM-IA.md).
 - **Integração contínua:** o GitHub Actions ([`.github/workflows/testes.yml`](.github/workflows/testes.yml)) roda `npm ci` e `npm run verificar` em todo push e Pull Request, no Ubuntu e no Windows, com Node 18, 20 e 22, e publica como artefato o relatório JSON do Jest e a saída do verificador. O `npm run verificar:completo` (todo TC do plano tem teste) roda sob pedido (*Run workflow*) ou em PR com o rótulo `entrega`.
-- **Os testes estão certos?** Falhar pelo motivo certo não prova que o resultado esperado está certo. Por isso os testes foram rodados contra uma implementação de referência e contra versões com defeito (mutantes), fora do repositório: [validação dos testes do Henrique](docs/VALIDACAO-TESTES-HENRIQUE.md) e [validação dos testes do Felipe](docs/VALIDACAO-TESTES-FELIPE.md) (22 de 22 mutantes mortos, nas duas ordens possíveis do duplo clique).
+- **Os testes estão certos?** Falhar pelo motivo certo não prova que o resultado esperado está certo. Por isso os testes foram rodados contra uma implementação de referência e contra versões com defeito (mutantes), fora do repositório: [validação dos testes do Henrique](docs/VALIDACAO-TESTES-HENRIQUE.md) e [validação dos testes do Felipe](docs/VALIDACAO-TESTES-FELIPE.md) (22 de 22 mutantes mortos, nas duas ordens possíveis do duplo clique). A seção "Lacunas fechadas (A6)" da validação do Henrique lista os 14 mutantes extras que a suíte antiga deixava passar e os TC-CM-36 a 46 que os matam.
 
-## Casos de teste (35)
+## Casos de teste (46)
 
 | ID | Cenário | Arquivo | Resultado esperado | Autor |
 |---|---|---|---|---|
@@ -90,6 +90,17 @@ npx jest tests/<arquivo>.spec.js -t "TC-CM-NN"   # um caso só
 | TC-CM-33 | Cronômetro não começa com bandeira (adicional) | `tests/cronometro.spec.js` | 0 depois da bandeira + 3 s; 2 após clicar `1-9` e esperar 2 s | Henrique |
 | TC-CM-34 | Cronômetro para na vitória (adicional) | `tests/cronometro.spec.js` | "Você venceu!"; continua 4 depois de mais 10 s | Henrique |
 | TC-CM-35 | Primeiro clique seguro mantém 40 minas (adicional) | `tests/tabuleiro.spec.js` | 1º clique em `7-9` revela; ao perder: `explodida` + `mina` = 40 | Henrique |
+| TC-CM-36 | Nova partida zera, para e reinicia o cronômetro (adicional) | `tests/lacunas.spec.js` | 0 após nova partida e sem clique; 2 após clicar e esperar 2 s | Henrique |
+| TC-CM-37 | Cronômetro para na derrota por duplo clique (adicional) | `tests/lacunas.spec.js` | "Você perdeu!"; continua 3 depois de mais 10 s | Henrique |
+| TC-CM-38 | Duplo clique bloqueado após a derrota (adicional) | `tests/lacunas.spec.js` | Nada abre; estado igual ao da derrota | Henrique |
+| TC-CM-39 | Clique esquerdo numa bandeira sem mina (adicional) | `tests/lacunas.spec.js` | Continua `bandeira`; contador 39 | Henrique |
+| TC-CM-40 | Primeiro clique seguro em 150 partidas (parametrizado; adicional) | `tests/lacunas.spec.js` | `7-9`, `1-1` e `14-18` nunca perdem no 1º clique | Henrique |
+| TC-CM-41 | Nova partida depois da vitória (adicional) | `tests/lacunas.spec.js` | Tudo zerado; `1-9` revela "2" | Henrique |
+| TC-CM-42 | Abrir vizinhos num número 3 (parametrizado; adicional) | `tests/lacunas.spec.js` | 3 bandeiras abrem (126 reveladas); 2 não abrem | Henrique |
+| TC-CM-43 | Número em canto e na borda (parametrizado; adicional) | `tests/lacunas.spec.js` | `1-1` = 3, `14-1` = 3, `7-1` = 5, `14-9` = 5 | Henrique |
+| TC-CM-44 | Cascata não revela bandeira em célula com número (adicional) | `tests/lacunas.spec.js` | `1-9` continua `bandeira`; 125 reveladas | Henrique |
+| TC-CM-45 | Cascata do lado direito a partir do meio (adicional) | `tests/lacunas.spec.js` | `7-13` abre as mesmas 86 células do TC-CM-08 | Henrique |
+| TC-CM-46 | Nova partida mantém as 40 minas do parâmetro (adicional) | `tests/lacunas.spec.js` | `7-10` explode; minas mostradas = `MINAS_PADRAO` | Henrique |
 
 ## Estrutura
 
