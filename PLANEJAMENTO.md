@@ -242,6 +242,7 @@ Salvo quando dito outro, todos usam `?minas=MINAS_PADRAO`.
 | TC-CM-38 | Duplo clique bloqueado após a derrota (caso adicional; tarefa A6) | Clicar `1-9`; clique direito em `1-10` e `2-10`; clicar `3-10` (perde); duplo clique em `1-9` | `1-8`, `2-8`, `2-9` continuam `oculta`; 211 `oculta`, 1 `revelada`, 2 `bandeira`, 37 `mina`, 1 `explodida`; `contador-minas` = 38; `mensagem` continua "Você perdeu!" |
 | TC-CM-39 | Clique esquerdo numa bandeira sem mina (caso adicional; tarefa A6) | Clique direito em `7-1`; clicar `7-1` | `7-1` continua `bandeira`; `contador-minas` = 39; as outras 251 `oculta`; `mensagem` vazia |
 | TC-CM-40 | Primeiro clique seguro em muitas partidas (parametrizado; caso adicional; tarefa A6) | Sem parâmetros. Para cada posição `7-9`, `1-1` e `14-18`: 150 jogos, cada um com o 1º clique nessa posição | Em todos os jogos: a célula clicada = `revelada` e `mensagem` diferente de "Você perdeu!" |
+| TC-CM-41 | Nova partida depois da vitória (caso adicional; tarefa A6) | Clicar `1-1` e `1-13` (vence); clicar `btn-nova-partida`; clicar `1-9` | Logo após a nova partida: 252 `oculta`, `contador-minas` = 40, `cronometro` = 0, `mensagem` vazia. Depois: `1-9` = `revelada` com "2" e só ela revelada |
 
 ### Felipe — bandeiras, fim de jogo e abrir vizinhos
 
