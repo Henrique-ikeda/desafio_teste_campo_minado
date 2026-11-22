@@ -61,3 +61,28 @@ test('TC-CM-36 nova partida zera, para e reinicia o cronômetro', async () => {
   esperar(2);
   expect(cronometro()).toHaveTextContent(/^2$/);
 });
+
+// TC-CM-37: derrota por duplo clique. 1-9 é "2" com bandeira certa em 1-10 e errada em 1-8: o duplo clique revela 2-10 (mina).
+// Só confere o que vale nas duas ordens de revelação (como o TC-CM-25).
+test('TC-CM-37 cronômetro para na derrota por duplo clique', async () => {
+  const user = await abrirComRelogio();
+  await user.click(celula('1-9'));
+  await cliqueDireito(user, celula('1-10'));
+  await cliqueDireito(user, celula('1-8'));
+  esperar(3);
+
+  // Conferência intermediária: o cronômetro estava rodando e o jogo não terminou.
+  expect(cronometro()).toHaveTextContent(/^3$/);
+  mensagemVazia();
+
+  await user.dblClick(celula('1-9'));
+
+  // Positivo: o duplo clique causou a derrota.
+  expect(celula('2-10')).toHaveAttribute('data-estado', 'explodida');
+  expect(mensagem()).toHaveTextContent(/^Você perdeu!$/);
+
+  // Positivo: o cronômetro parou no valor da derrota e continua parado.
+  expect(cronometro()).toHaveTextContent(/^3$/);
+  esperar(10);
+  expect(cronometro()).toHaveTextContent(/^3$/);
+});
