@@ -201,3 +201,49 @@ test('TC-CM-41 nova partida depois da vitória', async () => {
   });
   mensagemVazia();
 });
+
+// TC-CM-42: o duplo clique vale para qualquer número, não só o "2" (TC-CM-23 a 29). 2-9 mostra "3" (1-10, 2-10 e 3-10 são minas).
+test.each([
+  [['1-10', '2-10', '3-10'], true],
+  [['1-10', '2-10'], false],
+])('TC-CM-42 duplo clique em número 3 com bandeiras %j abre: %s', async (bandeiras, abre) => {
+  const user = await abrirJogo({ minas: MINAS_PADRAO });
+  await user.click(celula('2-9'));
+  for (const pos of bandeiras) await cliqueDireito(user, celula(pos));
+
+  // Conferência intermediária: 2-9 revelada com "3" e as bandeiras postas.
+  expect(celula('2-9')).toHaveTextContent(/^3$/);
+  expect(contador()).toHaveTextContent(new RegExp(`^${40 - bandeiras.length}$`));
+
+  await user.dblClick(celula('2-9'));
+
+  // Positivo: 2-9 continua com "3" e as bandeiras continuam no lugar.
+  expect(celula('2-9')).toHaveTextContent(/^3$/);
+  for (const pos of bandeiras) expect(celula(pos)).toHaveAttribute('data-estado', 'bandeira');
+  expect(contador()).toHaveTextContent(new RegExp(`^${40 - bandeiras.length}$`));
+  mensagemVazia();
+
+  if (abre) {
+    // 3 bandeiras = número 3: abre as vizinhas; 1-8 é vazia e a cascata abre o lado esquerdo todo (126).
+    expect(celula('1-8')).toHaveAttribute('data-estado', 'revelada');
+    expect(contarEstados()).toEqual({
+      oculta: 123,
+      revelada: 126,
+      bandeira: 3,
+      mina: 0,
+      explodida: 0,
+      'bandeira-errada': 0,
+    });
+  } else {
+    // 2 bandeiras ≠ número 3: não faz nada.
+    expect(celula('1-8')).toHaveAttribute('data-estado', 'oculta');
+    expect(contarEstados()).toEqual({
+      oculta: 249,
+      revelada: 1,
+      bandeira: 2,
+      mina: 0,
+      explodida: 0,
+      'bandeira-errada': 0,
+    });
+  }
+});
