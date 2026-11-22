@@ -240,6 +240,7 @@ Salvo quando dito outro, todos usam `?minas=MINAS_PADRAO`.
 | TC-CM-36 | Nova partida zera, para e reinicia o cronômetro (caso adicional; tarefa A6) | Relógio falso. Clicar `1-9`; esperar 5 s; clicar `btn-nova-partida`; esperar 3 s; clicar `1-9`; esperar 2 s | Antes da nova partida: `cronometro` = 5. Logo depois: 0 e `1-9` `oculta`. Depois de 3 s sem clique: continua 0. 2 s depois do clique: 2 |
 | TC-CM-37 | Cronômetro para na derrota por duplo clique (caso adicional; tarefa A6) | Relógio falso. Clicar `1-9`; clique direito em `1-10` e em `1-8` (sem mina); esperar 3 s; duplo clique em `1-9`; esperar 10 s | Antes do duplo clique: `cronometro` = 3. Depois: `2-10` = `explodida`, "Você perdeu!", `cronometro` = 3 e continua 3 depois de mais 10 s |
 | TC-CM-38 | Duplo clique bloqueado após a derrota (caso adicional; tarefa A6) | Clicar `1-9`; clique direito em `1-10` e `2-10`; clicar `3-10` (perde); duplo clique em `1-9` | `1-8`, `2-8`, `2-9` continuam `oculta`; 211 `oculta`, 1 `revelada`, 2 `bandeira`, 37 `mina`, 1 `explodida`; `contador-minas` = 38; `mensagem` continua "Você perdeu!" |
+| TC-CM-39 | Clique esquerdo numa bandeira sem mina (caso adicional; tarefa A6) | Clique direito em `7-1`; clicar `7-1` | `7-1` continua `bandeira`; `contador-minas` = 39; as outras 251 `oculta`; `mensagem` vazia |
 
 ### Felipe — bandeiras, fim de jogo e abrir vizinhos
 
