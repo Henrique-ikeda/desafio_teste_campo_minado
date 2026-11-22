@@ -49,7 +49,7 @@ npx jest tests/<arquivo>.spec.js -t "TC-CM-NN"   # um caso só
 - **Rastreabilidade:** cada teste tem no título o ID do caso (`TC-CM-NN`), o mesmo da tabela abaixo e da seção 5 do PLANEJAMENTO.md. A [matriz de cobertura](docs/MATRIZ-COBERTURA.md) liga cada regra do jogo aos seus casos.
 - **Metodologia:** TDD, um caso de teste por vez: escrever, rodar, ver falhar pelo motivo certo e fazer o commit `test:`. Uso de IA documentado em [docs/TDD-COM-IA.md](docs/TDD-COM-IA.md).
 - **Integração contínua:** o GitHub Actions ([`.github/workflows/testes.yml`](.github/workflows/testes.yml)) roda `npm ci` e `npm run verificar` em todo push e Pull Request, no Ubuntu e no Windows, com Node 18, 20 e 22, e publica como artefato o relatório JSON do Jest e a saída do verificador. O `npm run verificar:completo` (todo TC do plano tem teste) roda sob pedido (*Run workflow*) ou em PR com o rótulo `entrega`.
-- **Os testes estão certos?** Falhar pelo motivo certo não prova que o resultado esperado está certo. Por isso os testes foram rodados contra uma implementação de referência e contra versões com defeito (mutantes), fora do repositório: [validação dos testes do Henrique](docs/VALIDACAO-TESTES-HENRIQUE.md).
+- **Os testes estão certos?** Falhar pelo motivo certo não prova que o resultado esperado está certo. Por isso os testes foram rodados contra uma implementação de referência e contra versões com defeito (mutantes), fora do repositório: [validação dos testes do Henrique](docs/VALIDACAO-TESTES-HENRIQUE.md) e [validação dos testes do Felipe](docs/VALIDACAO-TESTES-FELIPE.md) (22 de 22 mutantes mortos, nas duas ordens possíveis do duplo clique).
 
 ## Casos de teste (35)
 
@@ -100,5 +100,5 @@ tests/helpers.js              abrirJogo(), MINAS_PADRAO e atalhos
 tests/*.spec.js               casos de teste
 scripts/verificar-testes.mjs  verificador (npm run verificar e CI)
 PLANEJAMENTO.md               regras, contrato, tarefas e casos de teste
-docs/                         matriz de cobertura e TDD com IA
+docs/                         matriz de cobertura, TDD com IA e validação dos testes
 ```
