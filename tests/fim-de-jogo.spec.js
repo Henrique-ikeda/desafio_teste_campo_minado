@@ -151,3 +151,41 @@ test('TC-CM-20 vitória', async () => {
     'bandeira-errada': 0,
   });
 });
+
+// TC-CM-21: depois da vitória, o tabuleiro fica bloqueado. A conferência intermediária prova que
+// a vitória aconteceu antes de testar o bloqueio. 1-10 e 2-10 são minas já com bandeira; nada pode mudar nelas.
+test('TC-CM-21 tabuleiro bloqueado após vitória', async () => {
+  const user = await abrirJogo({ minas: MINAS_PADRAO });
+  await user.click(celula('1-1'));
+  await user.click(celula('1-13'));
+
+  // Conferência intermediária: o jogo terminou em vitória e 1-10 está com bandeira.
+  expect(mensagem()).toHaveTextContent(/^Você venceu!$/);
+  expect(celula('1-10')).toHaveAttribute('data-estado', 'bandeira');
+
+  // Depois da vitória, tenta tirar a bandeira de 1-10 e clicar com o esquerdo em 2-10.
+  await cliqueDireito(user, celula('1-10'));
+  await user.click(celula('2-10'));
+
+  // Positivo: 1-10 continua com bandeira (clique direito bloqueado).
+  expect(celula('1-10')).toHaveAttribute('data-estado', 'bandeira');
+
+  // Positivo: 2-10 continua com bandeira (clique esquerdo bloqueado).
+  expect(celula('2-10')).toHaveAttribute('data-estado', 'bandeira');
+
+  // Positivo: o contador continua em 0.
+  expect(contador()).toHaveTextContent(/^0$/);
+
+  // Positivo: a mensagem continua a de vitória.
+  expect(mensagem()).toHaveTextContent(/^Você venceu!$/);
+
+  // Positivo: o estado é o mesmo do TC-CM-20 (212 reveladas, 40 bandeiras).
+  expect(contarEstados()).toEqual({
+    oculta: 0,
+    revelada: 212,
+    bandeira: 40,
+    mina: 0,
+    explodida: 0,
+    'bandeira-errada': 0,
+  });
+});
