@@ -255,6 +255,8 @@ Salvo quando dito outro, todos usam `?minas=MINAS_PADRAO`.
 | TC-CM-24 | Abrir vizinhos com bandeiras de menos | Clicar `1-9`; clique direito só em `1-10`; duplo clique em `1-9` | Nada abre: `1-8`, `2-8`, `2-9` continuam `oculta`; `1-9` continua "2"; `contador-minas` = 39; `mensagem` vazia |
 | TC-CM-25 | Abrir vizinhos com bandeira errada | Clicar `1-9`; clique direito em `1-10` e em `1-8` (sem mina); duplo clique em `1-9` | `2-10` = `explodida`; `1-8` = `bandeira-errada`; `mensagem` = "Você perdeu!" |
 | TC-CM-26 | Cascata não revela célula com bandeira (caso adicional) | Clique direito em `3-3` (sem mina); clicar `1-1` | `3-3` continua `bandeira`; 125 células `revelada` (o lado esquerdo menos `3-3`); `contador-minas` = 39; `mensagem` vazia |
+| TC-CM-28 | Bandeira numa célula sem mina impede a vitória (fronteira 211 × 212; caso adicional) | Clique direito em `1-1`; clicar `1-2`; clicar `1-13` → conferir. Depois clique direito em `1-1` (tira a bandeira); clicar `1-1` → conferir | 1ª conferência: 211 células `revelada`; `1-1` = `bandeira`; `mensagem` vazia (ainda não venceu). 2ª conferência: `mensagem` = "Você venceu!"; 212 `revelada`; `contador-minas` = 0 |
+| TC-CM-30 | Nova partida depois da derrota (caso adicional) | Clicar `1-10` (perde); clicar `btn-nova-partida`; clicar `1-9` | Logo após a nova partida: 252 `oculta`; `mensagem` vazia; `contador-minas` = 40. Depois do clique: `1-9` = `revelada` com "2" e só ela revelada (o tabuleiro foi desbloqueado) |
 
 ## 6. Fluxo de trabalho no Git
 

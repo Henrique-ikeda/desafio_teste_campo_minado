@@ -20,7 +20,7 @@ Regras completas, contrato da tela e divisão das tarefas: [PLANEJAMENTO.md](PLA
 | Nome | RA | GitHub | Parte no trabalho |
 |---|---|---|---|
 | Henrique Kendi Ikeda | 24039456-2 | [Henrique-ikeda](https://github.com/Henrique-ikeda) | Tarefas A1–A5: estrutura do projeto, verificador e 17 casos de teste (TC-CM-01 a 12 e 31 a 35: tabuleiro, revelar, cascata, cronômetro) |
-| Felipe Galeti Gôngora | 24036480-2 | [FGaleti](https://github.com/FGaleti) | Tarefas F1–F5: CI, README e 14 casos de teste (TC-CM-13 a 26: bandeiras, derrota, vitória, nova partida, abrir vizinhos) |
+| Felipe Galeti Gôngora | 24036480-2 | [FGaleti](https://github.com/FGaleti) | Tarefas F1–F5: CI, README e 16 casos de teste (TC-CM-13 a 26, 28 e 30: bandeiras, derrota, vitória, nova partida, abrir vizinhos) |
 
 As contribuições de cada um aparecem em **Insights → Contributors** e nos commits.
 
@@ -51,7 +51,7 @@ npx jest tests/<arquivo>.spec.js -t "TC-CM-NN"   # um caso só
 - **Integração contínua:** o GitHub Actions ([`.github/workflows/testes.yml`](.github/workflows/testes.yml)) roda `npm ci` e `npm run verificar` em todo push e Pull Request, no Ubuntu e no Windows, com Node 18, 20 e 22, e publica como artefato o relatório JSON do Jest e a saída do verificador. O `npm run verificar:completo` (todo TC do plano tem teste) roda sob pedido (*Run workflow*) ou em PR com o rótulo `entrega`.
 - **Os testes estão certos?** Falhar pelo motivo certo não prova que o resultado esperado está certo. Por isso os testes foram rodados contra uma implementação de referência e contra versões com defeito (mutantes), fora do repositório: [validação dos testes do Henrique](docs/VALIDACAO-TESTES-HENRIQUE.md).
 
-## Casos de teste (31)
+## Casos de teste (33)
 
 | ID | Cenário | Arquivo | Resultado esperado | Autor |
 |---|---|---|---|---|
@@ -81,6 +81,8 @@ npx jest tests/<arquivo>.spec.js -t "TC-CM-NN"   # um caso só
 | TC-CM-24 | Abrir vizinhos com bandeiras de menos | `tests/abrir-vizinhos.spec.js` | Nada abre | Felipe |
 | TC-CM-25 | Abrir vizinhos com bandeira errada | `tests/abrir-vizinhos.spec.js` | `2-10` explode; "Você perdeu!" | Felipe |
 | TC-CM-26 | Cascata não revela célula com bandeira (adicional) | `tests/bandeiras.spec.js` | `3-3` continua `bandeira`; 125 reveladas; contador 39 | Felipe |
+| TC-CM-28 | Bandeira numa célula sem mina impede a vitória (adicional) | `tests/fim-de-jogo.spec.js` | Com 211 reveladas não vence; ao revelar a 212ª: "Você venceu!"; contador 0 | Felipe |
+| TC-CM-30 | Nova partida depois da derrota (adicional) | `tests/fim-de-jogo.spec.js` | 252 ocultas, contador 40, mensagem vazia; `1-9` revela "2" | Felipe |
 | TC-CM-31 | Número de minas vizinhas de 5 a 8 (parametrizado; adicional) | `tests/tabuleiro.spec.js` | `2-2` mostra "8", "7", "6", "5" conforme as minas em volta; só ela revelada | Henrique |
 | TC-CM-32 | Cascata a partir do meio e de outro canto (parametrizado; adicional) | `tests/tabuleiro.spec.js` | `7-5` e `14-1` abrem as mesmas 126 células (colunas 1–9) | Henrique |
 | TC-CM-33 | Cronômetro não começa com bandeira (adicional) | `tests/cronometro.spec.js` | 0 depois da bandeira + 3 s; 2 após clicar `1-9` e esperar 2 s | Henrique |
