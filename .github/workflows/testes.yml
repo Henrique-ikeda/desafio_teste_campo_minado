@@ -1,17 +1,92 @@
+# CI do desafio_teste_campo_minado (tarefa F1).
+# Modo somente testes: `npm test` falha DE PROPÓSITO (o jogo não é implementado).
+# Quem valida a entrega é `npm run verificar`: sai com 0 quando todo teste falha pelo motivo certo.
 name: Testes
 
 on:
   push:
   pull_request:
+    # `labeled` para o job verificar-completo rodar quando o rótulo `entrega` for posto no PR.
+    types: [opened, synchronize, reopened, labeled]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash # o mesmo shell no Ubuntu e no Windows (Git Bash)
 
 jobs:
   verificar:
-    runs-on: ubuntu-latest
+    name: verificar (${{ matrix.os }}, Node ${{ matrix.node }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node: [18, 20, 22]
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: ${{ matrix.node }}
           cache: npm
+
       - run: npm ci
-      - run: npm run verificar
+
+      # Relatório do Jest para o artefato. Falhar aqui é o esperado; a validação é o passo seguinte.
+      - name: Relatório JSON do Jest (falhas esperadas)
+        run: |
+          mkdir -p reports
+          npx jest --json --outputFile=reports/jest.json > /dev/null 2>&1 || true
+
+      - name: npm run verificar
+        run: npm run verificar 2>&1 | tee reports/verificar.txt
+
+      - name: Publicar relatórios
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: relatorios-${{ matrix.os }}-node${{ matrix.node }}
+          path: reports/
+          if-no-files-found: warn
+          retention-days: 14
+
+  # Confere também que todo TC do PLANEJAMENTO.md tem teste. Só roda sob pedido
+  # (Actions → Run workflow) ou em PR com o rótulo `entrega`, para não bloquear os PRs do dia a dia.
+  verificar-completo:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'entrega'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: npm run verificar:completo
+        run: |
+          mkdir -p reports
+          npm run verificar:completo 2>&1 | tee reports/verificar-completo.txt
+
+      - name: Publicar relatório
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: relatorio-verificar-completo
+          path: reports/
+          if-no-files-found: warn
+          retention-days: 14

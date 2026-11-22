@@ -1,5 +1,7 @@
 # desafio_teste_campo_minado
 
+[![Testes](https://github.com/Henrique-ikeda/desafio_teste_campo_minado/actions/workflows/testes.yml/badge.svg)](https://github.com/Henrique-ikeda/desafio_teste_campo_minado/actions/workflows/testes.yml)
+
 Desafio de testes: casos de teste para testar o **campo minado** em tabuleiro **18 × 14 com 40 bombas**, com **casos de teste em JavaScript para testar JavaScript** (Jest + Testing Library).
 
 ## Especificação do desafio
@@ -17,8 +19,8 @@ Regras completas, contrato da tela e divisão das tarefas: [PLANEJAMENTO.md](PLA
 
 | Nome | RA | GitHub | Parte no trabalho |
 |---|---|---|---|
-| Henrique | SEU_RA | [Henrique-ikeda](https://github.com/Henrique-ikeda) | Tarefas A1–A5: estrutura do projeto e 12 casos de teste (tabuleiro, revelar, cascata, cronômetro) |
-| Felipe | RA_FELIPE | [GITHUB_FELIPE](https://github.com/GITHUB_FELIPE) | Tarefas F1–F5: CI, README e 13 casos de teste (bandeiras, derrota, vitória, nova partida, abrir vizinhos) |
+| Henrique Kendi Ikeda | 24039456-2 | [Henrique-ikeda](https://github.com/Henrique-ikeda) | Tarefas A1–A5: estrutura do projeto, verificador e 17 casos de teste (TC-CM-01 a 12 e 31 a 35: tabuleiro, revelar, cascata, cronômetro) |
+| Felipe Galeti Gôngora | 24036480-2 | [FGaleti](https://github.com/FGaleti) | Tarefas F1–F5: CI, README e 13 casos de teste (TC-CM-13 a 25: bandeiras, derrota, vitória, nova partida, abrir vizinhos) |
 
 As contribuições de cada um aparecem em **Insights → Contributors** e nos commits.
 
@@ -36,6 +38,8 @@ npx jest tests/<arquivo>.spec.js -t "TC-CM-NN"   # um caso só
 
 ## Funcionamento dos casos de teste
 
+> **Aviso para o corretor:** `npm test` termina com falhas **de propósito** (o jogo não é implementado; a entrega são os casos de teste). O comando que valida a entrega é `npm run verificar`, que sai com código 0 quando todos os testes falham pelo motivo certo.
+
 **Situação:** somente os casos de teste. O jogo não está implementado, então **todos os testes falham de propósito**, pelo motivo certo (o comportamento ainda não existe). O `npm run verificar` confere isso.
 
 - **Ferramentas:** [Jest](https://jestjs.io) roda os testes; [Testing Library](https://testing-library.com) (`@testing-library/dom`, `user-event` e `jest-dom`) simula o jogador; o [jsdom](https://github.com/jsdom/jsdom) faz o papel do navegador, sem precisar abrir um.
@@ -44,7 +48,8 @@ npx jest tests/<arquivo>.spec.js -t "TC-CM-NN"   # um caso só
 - **Sem depender de sorte:** a posição das minas é passada pelo parâmetro de URL `minas`. Quase todos os testes usam o campo fixo `MINAS_PADRAO` (colunas 10 e 18 inteiras e coluna 17 das linhas 1–12), em que os resultados são conhecidos: clicar `1-1` abre 126 células, `1-13` abre 86, e as duas juntas dão a vitória. O tempo usa relógio falso (`jest.useFakeTimers()`).
 - **Rastreabilidade:** cada teste tem no título o ID do caso (`TC-CM-NN`), o mesmo da tabela abaixo e da seção 5 do PLANEJAMENTO.md. A [matriz de cobertura](docs/MATRIZ-COBERTURA.md) liga cada regra do jogo aos seus casos.
 - **Metodologia:** TDD, um caso de teste por vez: escrever, rodar, ver falhar pelo motivo certo e fazer o commit `test:`. Uso de IA documentado em [docs/TDD-COM-IA.md](docs/TDD-COM-IA.md).
-- **Integração contínua:** o GitHub Actions roda `npm ci` e `npm run verificar` em todo push e Pull Request.
+- **Integração contínua:** o GitHub Actions ([`.github/workflows/testes.yml`](.github/workflows/testes.yml)) roda `npm ci` e `npm run verificar` em todo push e Pull Request, no Ubuntu e no Windows, com Node 18, 20 e 22, e publica como artefato o relatório JSON do Jest e a saída do verificador. O `npm run verificar:completo` (todo TC do plano tem teste) roda sob pedido (*Run workflow*) ou em PR com o rótulo `entrega`.
+- **Os testes estão certos?** Falhar pelo motivo certo não prova que o resultado esperado está certo. Por isso os testes foram rodados contra uma implementação de referência e contra versões com defeito (mutantes), fora do repositório: [validação dos testes do Henrique](docs/VALIDACAO-TESTES-HENRIQUE.md).
 
 ## Casos de teste (30)
 
@@ -77,9 +82,9 @@ npx jest tests/<arquivo>.spec.js -t "TC-CM-NN"   # um caso só
 | TC-CM-25 | Abrir vizinhos com bandeira errada | `tests/abrir-vizinhos.spec.js` | `2-10` explode; "Você perdeu!" | Felipe |
 | TC-CM-31 | Número de minas vizinhas de 5 a 8 (parametrizado; adicional) | `tests/tabuleiro.spec.js` | `2-2` mostra "8", "7", "6", "5" conforme as minas em volta; só ela revelada | Henrique |
 | TC-CM-32 | Cascata a partir do meio e de outro canto (parametrizado; adicional) | `tests/tabuleiro.spec.js` | `7-5` e `14-1` abrem as mesmas 126 células (colunas 1–9) | Henrique |
-| TC-CM-35 | Primeiro clique seguro mantém 40 minas (adicional) | `tests/tabuleiro.spec.js` | 1º clique em `7-9` revela; ao perder: `explodida` + `mina` = 40 | Henrique |
 | TC-CM-33 | Cronômetro não começa com bandeira (adicional) | `tests/cronometro.spec.js` | 0 depois da bandeira + 3 s; 2 após clicar `1-9` e esperar 2 s | Henrique |
 | TC-CM-34 | Cronômetro para na vitória (adicional) | `tests/cronometro.spec.js` | "Você venceu!"; continua 4 depois de mais 10 s | Henrique |
+| TC-CM-35 | Primeiro clique seguro mantém 40 minas (adicional) | `tests/tabuleiro.spec.js` | 1º clique em `7-9` revela; ao perder: `explodida` + `mina` = 40 | Henrique |
 
 ## Estrutura
 
