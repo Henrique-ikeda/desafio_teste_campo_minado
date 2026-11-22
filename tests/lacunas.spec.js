@@ -325,3 +325,31 @@ test('TC-CM-45 cascata do lado direito a partir de 7-13', async () => {
   expect(celula('1-9')).toHaveAttribute('data-estado', 'oculta');
   mensagemVazia();
 });
+
+// TC-CM-46: depois de "Nova partida" TODAS as 40 minas do parâmetro continuam valendo (o TC-CM-22 só confere 1-9 = "2", que
+// depende de 2 minas). 7-10 é mina; a derrota mostra as 40 minas de MINAS_PADRAO.
+test('TC-CM-46 nova partida mantém as 40 minas do parâmetro', async () => {
+  const user = await abrirJogo({ minas: MINAS_PADRAO });
+  await user.click(celula('1-1'));
+  await user.click(screen.getByTestId('btn-nova-partida'));
+
+  // Conferência intermediária: a partida nova começou do zero.
+  expect(contarEstados().oculta).toBe(252);
+
+  await user.click(celula('7-10'));
+
+  // Positivo: 7-10 é mina e explode, como no primeiro jogo.
+  expect(celula('7-10')).toHaveAttribute('data-estado', 'explodida');
+  expect(mensagem()).toHaveTextContent(/^Você perdeu!$/);
+
+  // Positivo: as minas mostradas são exatamente as 40 de MINAS_PADRAO.
+  expect([...posicoesNoEstado('explodida'), ...posicoesNoEstado('mina')].sort()).toEqual([...LISTA_MINAS_PADRAO].sort());
+  expect(contarEstados()).toEqual({
+    oculta: 212,
+    revelada: 0,
+    bandeira: 0,
+    mina: 39,
+    explodida: 1,
+    'bandeira-errada': 0,
+  });
+});
