@@ -102,3 +102,31 @@ test('TC-CM-15 bandeira protege a célula', async () => {
   // Positivo: não houve derrota, então a mensagem continua vazia.
   mensagemVazia();
 });
+
+// TC-CM-16: célula revelada não recebe bandeira. 1-9 mostra "2" (as vizinhas 1-10 e 2-10 são minas),
+// então clicar com o botão direito nela não muda nada.
+test('TC-CM-16 sem bandeira em célula revelada', async () => {
+  const user = await abrirJogo({ minas: MINAS_PADRAO });
+  await user.click(celula('1-9'));
+  await cliqueDireito(user, celula('1-9'));
+
+  // Positivo: 1-9 continua revelada e mostrando "2".
+  expect(celula('1-9')).toHaveAttribute('data-estado', 'revelada');
+  expect(celula('1-9')).toHaveTextContent(/^2$/);
+
+  // Positivo: o contador continua em 40 (nenhuma bandeira foi posta).
+  expect(contador()).toHaveTextContent(/^40$/);
+
+  // Positivo: só 1-9 revelada; as outras 251 continuam ocultas, sem bandeiras.
+  expect(contarEstados()).toEqual({
+    oculta: 251,
+    revelada: 1,
+    bandeira: 0,
+    mina: 0,
+    explodida: 0,
+    'bandeira-errada': 0,
+  });
+
+  // Positivo: o jogo não terminou, então a mensagem continua vazia.
+  mensagemVazia();
+});
