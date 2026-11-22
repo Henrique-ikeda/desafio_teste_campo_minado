@@ -189,3 +189,58 @@ test('TC-CM-21 tabuleiro bloqueado após vitória', async () => {
     'bandeira-errada': 0,
   });
 });
+
+// TC-CM-22: nova partida. A conferência intermediária prova que havia o que zerar (1-1 revelada,
+// 1-10 com bandeira, contador em 39). Depois de "Nova partida" tudo volta ao começo, mas as minas
+// continuam as do parâmetro: por isso 1-9 mostra "2" de novo.
+test('TC-CM-22 nova partida', async () => {
+  const user = await abrirJogo({ minas: MINAS_PADRAO });
+  await user.click(celula('1-1'));
+  await cliqueDireito(user, celula('1-10'));
+
+  // Conferência intermediária: havia célula revelada, bandeira e contador em 39.
+  expect(celula('1-1')).toHaveAttribute('data-estado', 'revelada');
+  expect(celula('1-10')).toHaveAttribute('data-estado', 'bandeira');
+  expect(contador()).toHaveTextContent(/^39$/);
+
+  await user.click(screen.getByTestId('btn-nova-partida'));
+
+  // Positivo: logo após a nova partida, as 252 células estão ocultas.
+  expect(contarEstados()).toEqual({
+    oculta: 252,
+    revelada: 0,
+    bandeira: 0,
+    mina: 0,
+    explodida: 0,
+    'bandeira-errada': 0,
+  });
+
+  // Positivo: o contador volta a 40.
+  expect(contador()).toHaveTextContent(/^40$/);
+
+  // Positivo: o cronômetro volta a 0.
+  expect(screen.getByTestId('cronometro')).toHaveTextContent(/^0$/);
+
+  // Positivo: a mensagem fica vazia.
+  mensagemVazia();
+
+  // Depois da nova partida, clica em 1-9: mostra "2" (as minas do parâmetro continuam as mesmas).
+  await user.click(celula('1-9'));
+
+  // Positivo: 1-9 fica revelada com "2".
+  expect(celula('1-9')).toHaveAttribute('data-estado', 'revelada');
+  expect(celula('1-9')).toHaveTextContent(/^2$/);
+
+  // Positivo: só 1-9 revelada; as outras 251 continuam ocultas.
+  expect(contarEstados()).toEqual({
+    oculta: 251,
+    revelada: 1,
+    bandeira: 0,
+    mina: 0,
+    explodida: 0,
+    'bandeira-errada': 0,
+  });
+
+  // Positivo: o jogo não terminou, então a mensagem continua vazia.
+  mensagemVazia();
+});
