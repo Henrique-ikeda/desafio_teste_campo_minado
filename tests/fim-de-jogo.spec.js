@@ -52,3 +52,38 @@ test('TC-CM-17 derrota', async () => {
   // Positivo: sem bandeiras, o contador continua em 40.
   expect(contador()).toHaveTextContent(/^40$/);
 });
+
+// TC-CM-18: bandeira errada na derrota. 7-1 não tem mina, então a bandeira vira 'bandeira-errada'.
+// 2-10 é mina e a bandeira continua nela. A mina clicada (1-10) explode e as outras minas aparecem.
+// O contador-minas não é conferido aqui: a seção 5 não diz se a bandeira errada ainda conta.
+test('TC-CM-18 bandeira errada na derrota', async () => {
+  const user = await abrirJogo({ minas: MINAS_PADRAO });
+  await cliqueDireito(user, celula('7-1'));
+  await cliqueDireito(user, celula('2-10'));
+  await user.click(celula('1-10'));
+
+  // Positivo: a bandeira em 7-1 (sem mina) é marcada como errada.
+  expect(celula('7-1')).toHaveAttribute('data-estado', 'bandeira-errada');
+
+  // Positivo: a bandeira em 2-10 (mina) continua bandeira.
+  expect(celula('2-10')).toHaveAttribute('data-estado', 'bandeira');
+
+  // Positivo: a mina clicada fica explodida.
+  expect(celula('1-10')).toHaveAttribute('data-estado', 'explodida');
+
+  // Positivo: a derrota é anunciada.
+  expect(mensagem()).toHaveTextContent(/^Você perdeu!$/);
+
+  // Positivo: as minas mostradas são as de MINAS_PADRAO menos 1-10 (explodida) e menos 2-10 (bandeira).
+  expect(posicoesNoEstado('mina')).toEqual([...LISTA_MINAS_PADRAO].filter((p) => p !== '1-10' && p !== '2-10').sort());
+
+  // Positivo: 211 ocultas, 38 minas, 1 explodida, 1 bandeira e 1 bandeira errada.
+  expect(contarEstados()).toEqual({
+    oculta: 211,
+    revelada: 0,
+    bandeira: 1,
+    mina: 38,
+    explodida: 1,
+    'bandeira-errada': 1,
+  });
+});
