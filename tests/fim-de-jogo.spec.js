@@ -87,3 +87,40 @@ test('TC-CM-18 bandeira errada na derrota', async () => {
     'bandeira-errada': 1,
   });
 });
+
+// TC-CM-19: depois da derrota, o tabuleiro fica bloqueado. A conferência intermediária prova que
+// o jogo já terminou em derrota antes de tentar clicar de novo (senão o teste passaria sem o bloqueio ser testado).
+test('TC-CM-19 tabuleiro bloqueado após derrota', async () => {
+  const user = await abrirJogo({ minas: MINAS_PADRAO });
+  await user.click(celula('1-10'));
+
+  // Conferência intermediária: o jogo terminou em derrota.
+  expect(mensagem()).toHaveTextContent(/^Você perdeu!$/);
+  expect(celula('1-10')).toHaveAttribute('data-estado', 'explodida');
+
+  // Depois da derrota, tenta revelar 7-1 e pôr bandeira em 7-2.
+  await user.click(celula('7-1'));
+  await cliqueDireito(user, celula('7-2'));
+
+  // Positivo: 7-1 continua oculta (clique esquerdo bloqueado).
+  expect(celula('7-1')).toHaveAttribute('data-estado', 'oculta');
+
+  // Positivo: 7-2 continua oculta (clique direito bloqueado).
+  expect(celula('7-2')).toHaveAttribute('data-estado', 'oculta');
+
+  // Positivo: o contador continua em 40 (nenhuma bandeira posta).
+  expect(contador()).toHaveTextContent(/^40$/);
+
+  // Positivo: a mensagem continua a de derrota.
+  expect(mensagem()).toHaveTextContent(/^Você perdeu!$/);
+
+  // Positivo: o estado é o mesmo do TC-CM-17 (212 ocultas, 39 minas mostradas, 1 explodida).
+  expect(contarEstados()).toEqual({
+    oculta: 212,
+    revelada: 0,
+    bandeira: 0,
+    mina: 39,
+    explodida: 1,
+    'bandeira-errada': 0,
+  });
+});
