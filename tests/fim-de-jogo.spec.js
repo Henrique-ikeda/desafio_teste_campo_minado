@@ -124,3 +124,30 @@ test('TC-CM-19 tabuleiro bloqueado após derrota', async () => {
     'bandeira-errada': 0,
   });
 });
+
+// TC-CM-20: vitória. Abrir 1-1 (126 células à esquerda) e 1-13 (86 à direita) dá 212 = todas as
+// células sem mina. Aí o jogo termina em vitória e as 40 minas recebem bandeira (contador em 0).
+test('TC-CM-20 vitória', async () => {
+  const user = await abrirJogo({ minas: MINAS_PADRAO });
+  await user.click(celula('1-1'));
+  await user.click(celula('1-13'));
+
+  // Positivo: a vitória é anunciada.
+  expect(mensagem()).toHaveTextContent(/^Você venceu!$/);
+
+  // Positivo: o contador vai a 0 (40 bandeiras − 40 minas).
+  expect(contador()).toHaveTextContent(/^0$/);
+
+  // Positivo: as 40 bandeiras são exatamente as minas de MINAS_PADRAO.
+  expect(posicoesNoEstado('bandeira')).toEqual([...LISTA_MINAS_PADRAO].sort());
+
+  // Positivo: 212 reveladas, 40 bandeiras, nenhuma oculta, mina, explodida ou bandeira errada.
+  expect(contarEstados()).toEqual({
+    oculta: 0,
+    revelada: 212,
+    bandeira: 40,
+    mina: 0,
+    explodida: 0,
+    'bandeira-errada': 0,
+  });
+});
