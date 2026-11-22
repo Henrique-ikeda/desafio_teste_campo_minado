@@ -20,7 +20,7 @@ A seção 1 diz que o duplo clique "revela todas as vizinhas ocultas sem bandeir
 | A | Ordem de leitura (de cima para baixo, da esquerda para a direita): `2-8` abre a cascata antes de `2-10` explodir | 18/18 passaram, 3 de 3 |
 | B | Ordem inversa: `2-10` explode primeiro e o tabuleiro bloqueia antes de `2-8` | 18/18 passaram, 3 de 3 |
 
-Isso prova que nenhum teste depende da ordem. O TC-CM-25 só confere o que vale nas duas: `2-10` = `explodida`, `1-8` = `bandeira-errada`, `1-10` continua `bandeira`, as outras 38 minas = `mina`, "Você perdeu!", e `oculta` + `revelada` = 211. Ele **não** confere `2-8`, `2-9` nem o total de reveladas.
+Isso prova que nenhum teste depende da ordem. O TC-CM-25 só confere o que vale nas duas: `2-10` = `explodida`, `1-8` = `bandeira-errada`, `1-10` continua `bandeira`, as outras 38 minas = `mina`, "Você perdeu!", e `oculta` + `revelada` = 211. Ele **não** confere `2-8` nem `2-9`, nem quantas células ficam `revelada` ou `oculta` (só a soma das duas).
 
 ## Mutantes
 
@@ -61,7 +61,8 @@ Isso prova que nenhum teste depende da ordem. O TC-CM-25 só confere o que vale 
 - **Cinco casos adicionais (26 a 30)** para lacunas que nenhum TC cobria: cascata com bandeira (26), vitória pelo duplo clique (27), fronteira 211 × 212 (28), bandeiras a mais no duplo clique (29) e nova partida depois da derrota (30).
 - **Contagens exatas** em todo TC com um `contarEstados()` local (as 252 células, todos os estados). Um estado desconhecido quebra o `toEqual`. Assim, uma implementação que revela demais, mostra minas demais ou não marca a bandeira errada é pega.
 - **Conferência intermediária** antes de testar "nada muda" (TC-14, 19, 21, 22, 23, 27, 29, 30). Sem ela, o teste passaria com um jogo que ignora o clique.
-- **TC-CM-18 e TC-CM-25 não conferem o `contador-minas`** (ver a ambiguidade 6).
+- **TC-CM-18 e TC-CM-25 não conferem o `contador-minas`**: nos dois há uma bandeira errada (`7-1` e `1-8`), e não está definido se ela ainda conta (ver a ambiguidade 6).
+- **TC-CM-23 também confere a vizinha com número:** `2-9` é revelada com "3" (`1-10`, `2-10` e `3-10` são minas). Sugestão do revisor; não depende da ordem, porque nesse cenário nenhuma vizinha revelada é mina.
 
 ## Ambiguidades da especificação (decisão pendente da dupla)
 
@@ -71,5 +72,5 @@ Nenhuma regra foi inventada além da regra da cascata, que já estava implícita
 2. **Ordem das vizinhas no duplo clique**, quando uma é mina e outra abre cascata (TC-CM-25): não especificada. Os testes valem para as duas ordens.
 3. **A cascata respeita bandeiras?** Resolvido com a regra nova da seção 1 (TC-CM-26). Se a dupla preferir outra regra, o TC-CM-25 perde a base e precisa ser revisto.
 4. **Duplo clique numa célula vazia revelada, ou numa célula oculta:** não especificado. Os testes só fazem duplo clique em `1-9` (número 2) já revelada.
-5. **Na derrota, as minas com bandeira certa** continuam `bandeira` (assumido nos TC-CM-18 e 25, como diz a seção 3: `mina` = "as outras minas") ou viram `mina`? Hoje assumimos `bandeira`.
-6. **Contador na derrota com bandeira errada:** no TC-CM-18 há duas bandeiras colocadas (`7-1`, errada, e `2-10`). Pela fórmula, o contador seria 38. Mas, se a bandeira errada deixar de contar ao virar `bandeira-errada`, seria 39. A seção 5 não pede o contador nesses TCs, e por isso os TCs 18 e 25 não o conferem.
+5. **Na derrota, as minas com bandeira certa** continuam `bandeira` ou viram `mina`? **Resolvido pela seção 5:** o TC-CM-18 diz "`2-10` continua `bandeira`". Os TC-CM-18 e 25 seguem isso.
+6. **Contador na derrota com bandeira errada:** no TC-CM-18 há duas bandeiras colocadas (`7-1`, errada, e `2-10`). Pela fórmula, o contador seria 38. Mas, se a bandeira errada deixar de contar ao virar `bandeira-errada`, seria 39. O TC-CM-25 tem a mesma dúvida (`1-8` errada e `1-10` certa: 38 ou 39). A seção 5 não pede o contador nesses TCs, e por isso os TCs 18 e 25 não o conferem.
