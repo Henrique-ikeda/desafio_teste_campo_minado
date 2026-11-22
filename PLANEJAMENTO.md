@@ -4,8 +4,8 @@ Campo minado em tabuleiro **18 × 14** com **40 minas**: **casos de teste de int
 
 | Integrante | GitHub | Papel neste repositório |
 |---|---|---|
-| Henrique (SEU_RA) | Henrique-ikeda | Setup do projeto e testes de: tabuleiro, revelar células, números, cascata e cronômetro (tarefas A1–A5) |
-| Felipe (RA_FELIPE) | GITHUB_FELIPE | CI, README e testes de: bandeiras, derrota, vitória, nova partida e abrir vizinhos (tarefas F1–F5) |
+| Henrique Kendi Ikeda (RA 24039456-2) | Henrique-ikeda | Setup do projeto e testes de: tabuleiro, revelar células, números, cascata e cronômetro (tarefas A1–A5) |
+| Felipe Galeti Gôngora (RA 24036480-2) | FGaleti | CI, README e testes de: bandeiras, derrota, vitória, nova partida e abrir vizinhos (tarefas F1–F5) |
 
 ---
 
@@ -207,6 +207,10 @@ Cada integrante é **dono de arquivos de teste diferentes** (coluna "Arquivos").
 | **F4** Vitória e nova partida | `felipe/f4-vitoria` | tests/fim-de-jogo.spec.js | TC-CM-20, 21, 22 |
 | **F5** Abrir vizinhos (duplo clique) | `felipe/f5-abrir-vizinhos` | tests/abrir-vizinhos.spec.js | TC-CM-23, 24, 25 |
 
+### IDs reservados para casos de teste adicionais
+
+Para os dois poderem acrescentar casos sem colidir: **TC-CM-26 a TC-CM-30** ficam para o Felipe; **TC-CM-31 em diante** ficam para o Henrique. Cada caso novo entra na seção 5 (commit `docs:` antes do `test:`), na [matriz de cobertura](docs/MATRIZ-COBERTURA.md) e na tabela do README, no mesmo PR da tarefa.
+
 ## 5. Casos de teste (interface)
 
 Salvo quando dito outro, todos usam `?minas=MINAS_PADRAO`.
@@ -227,6 +231,11 @@ Salvo quando dito outro, todos usam `?minas=MINAS_PADRAO`.
 | TC-CM-10 | Cronômetro começa no 1º clique | Relógio falso. Esperar 3 s; clicar `1-9`; esperar 3 s | Antes do clique, depois de 3 s: `cronometro` = 0. 3 s depois do clique: 3 |
 | TC-CM-11 | Cronômetro para no fim | Relógio falso. Clicar `1-9`; esperar 5 s; clicar `1-10` (perde); esperar 10 s | `cronometro` = 5 no momento da derrota e continua 5 depois de mais 10 s |
 | TC-CM-12 | Cronômetro não passa de 999 | Relógio falso. Clicar `1-9`; esperar 1200 s | `cronometro` = 999 |
+| TC-CM-31 | Número de minas vizinhas de 5 a 8 (parametrizado; caso adicional) | 4 jogos, cada um com 40 minas no parâmetro `minas`: base de 32 (colunas 17 e 18 inteiras + coluna 16 das linhas 1–4) + as 8 vizinhas de `2-2` (`1-1`, `1-2`, `1-3`, `2-1`, `2-3`, `3-1`, `3-2`, `3-3`). Para "7", "6" e "5", tirar `3-3`; `3-3` e `3-2`; `3-3`, `3-2` e `3-1`, pondo no lugar `5-16`; `5-16` e `6-16`; `5-16`, `6-16` e `7-16`. Clicar `2-2` | Texto "8", "7", "6", "5", respectivamente; só `2-2` é revelada (251 `oculta`) |
+| TC-CM-32 | Cascata a partir do meio e de outro canto (parametrizado; caso adicional) | Em jogos separados, clicar `7-5` e `14-1` | Em cada um: as mesmas 126 células `revelada` (colunas 1–9); `1-9` = "2"; a coluna 10 inteira continua `oculta`; `mensagem` vazia |
+| TC-CM-35 | Primeiro clique seguro mantém 40 minas (caso adicional) | Sem parâmetros. Clicar `7-9`; depois clicar as células ocultas em ordem (`1-1`, `1-2`, …) até perder | Depois do 1º clique: `7-9` = `revelada`. No fim: `mensagem` = "Você perdeu!"; exatamente 1 `explodida` e `explodida` + `mina` = **40** (a mina foi realocada, não apagada) |
+| TC-CM-33 | Cronômetro não começa com bandeira (caso adicional) | Relógio falso. Clique direito em `7-1`; esperar 3 s; clicar `1-9`; esperar 2 s | Depois da bandeira e dos 3 s: `7-1` = `bandeira` e `cronometro` = 0. No fim: `cronometro` = 2 |
+| TC-CM-34 | Cronômetro para na vitória (caso adicional; encosta na vitória, área do Felipe) | Relógio falso. Clicar `1-1`; esperar 4 s; clicar `1-13` (vence); esperar 10 s | `mensagem` = "Você venceu!"; `cronometro` = 4 no momento da vitória e continua 4 depois de mais 10 s |
 
 ### Felipe — bandeiras, fim de jogo e abrir vizinhos
 
@@ -250,7 +259,7 @@ Salvo quando dito outro, todos usam `?minas=MINAS_PADRAO`.
 
 Para o professor enxergar a contribuição dos dois, **cada um commita da própria conta**:
 
-1. **Henrique** cria o repositório e adiciona `GITHUB_FELIPE` como colaborador (Settings → Collaborators). **Felipe** aceita o convite.
+1. **Henrique** cria o repositório e adiciona `FGaleti` como colaborador (Settings → Collaborators). **Felipe** aceita o convite.
 2. Cada um configura o Git com o e-mail **cadastrado na própria conta do GitHub** (senão o commit não conta como contribuição):
    ```bash
    git config user.name "Seu Nome"

@@ -46,7 +46,7 @@ npx jest tests/<arquivo>.spec.js -t "TC-CM-NN"   # um caso só
 - **Metodologia:** TDD, um caso de teste por vez: escrever, rodar, ver falhar pelo motivo certo e fazer o commit `test:`. Uso de IA documentado em [docs/TDD-COM-IA.md](docs/TDD-COM-IA.md).
 - **Integração contínua:** o GitHub Actions roda `npm ci` e `npm run verificar` em todo push e Pull Request.
 
-## Casos de teste (25)
+## Casos de teste (30)
 
 | ID | Cenário | Arquivo | Resultado esperado | Autor |
 |---|---|---|---|---|
@@ -75,6 +75,11 @@ npx jest tests/<arquivo>.spec.js -t "TC-CM-NN"   # um caso só
 | TC-CM-23 | Abrir vizinhos com bandeiras certas | `tests/abrir-vizinhos.spec.js` | Vizinhas abertas + cascata (126 reveladas) | Felipe |
 | TC-CM-24 | Abrir vizinhos com bandeiras de menos | `tests/abrir-vizinhos.spec.js` | Nada abre | Felipe |
 | TC-CM-25 | Abrir vizinhos com bandeira errada | `tests/abrir-vizinhos.spec.js` | `2-10` explode; "Você perdeu!" | Felipe |
+| TC-CM-31 | Número de minas vizinhas de 5 a 8 (parametrizado; adicional) | `tests/tabuleiro.spec.js` | `2-2` mostra "8", "7", "6", "5" conforme as minas em volta; só ela revelada | Henrique |
+| TC-CM-32 | Cascata a partir do meio e de outro canto (parametrizado; adicional) | `tests/tabuleiro.spec.js` | `7-5` e `14-1` abrem as mesmas 126 células (colunas 1–9) | Henrique |
+| TC-CM-35 | Primeiro clique seguro mantém 40 minas (adicional) | `tests/tabuleiro.spec.js` | 1º clique em `7-9` revela; ao perder: `explodida` + `mina` = 40 | Henrique |
+| TC-CM-33 | Cronômetro não começa com bandeira (adicional) | `tests/cronometro.spec.js` | 0 depois da bandeira + 3 s; 2 após clicar `1-9` e esperar 2 s | Henrique |
+| TC-CM-34 | Cronômetro para na vitória (adicional) | `tests/cronometro.spec.js` | "Você venceu!"; continua 4 depois de mais 10 s | Henrique |
 
 ## Estrutura
 
