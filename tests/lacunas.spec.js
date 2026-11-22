@@ -120,3 +120,29 @@ test('TC-CM-38 duplo clique bloqueado após a derrota', async () => {
   expect(contador()).toHaveTextContent(/^38$/);
   expect(mensagem()).toHaveTextContent(/^Você perdeu!$/);
 });
+
+// TC-CM-39: a bandeira protege também uma célula SEM mina (o TC-CM-15 só cobre uma mina).
+test('TC-CM-39 clique esquerdo numa bandeira sem mina', async () => {
+  const user = await abrirJogo({ minas: MINAS_PADRAO });
+  await cliqueDireito(user, celula('7-1'));
+  await user.click(celula('7-1'));
+
+  // Positivo: 7-1 continua com bandeira.
+  expect(celula('7-1')).toHaveAttribute('data-estado', 'bandeira');
+
+  // Positivo: o contador continua em 39.
+  expect(contador()).toHaveTextContent(/^39$/);
+
+  // Positivo: só a bandeira em 7-1; as outras 251 continuam ocultas.
+  expect(contarEstados()).toEqual({
+    oculta: 251,
+    revelada: 0,
+    bandeira: 1,
+    mina: 0,
+    explodida: 0,
+    'bandeira-errada': 0,
+  });
+
+  // Positivo: o jogo não terminou.
+  mensagemVazia();
+});
