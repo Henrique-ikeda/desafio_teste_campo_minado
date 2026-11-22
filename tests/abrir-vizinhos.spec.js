@@ -180,3 +180,47 @@ test('TC-CM-27 vitória pelo duplo clique', async () => {
     'bandeira-errada': 0,
   });
 });
+
+// TC-CM-29 (caso adicional): abrir vizinhos com bandeiras a mais. 1-9 é número 2, mas tem 3 bandeiras
+// em volta (1-10, 2-10 e 1-8). Como 3 ≠ 2, o duplo clique não faz nada. O TC-CM-24 cobre bandeiras de menos.
+test('TC-CM-29 abrir vizinhos com bandeiras a mais', async () => {
+  const user = await abrirJogo({ minas: MINAS_PADRAO });
+  await user.click(celula('1-9'));
+  await cliqueDireito(user, celula('1-10'));
+  await cliqueDireito(user, celula('2-10'));
+  await cliqueDireito(user, celula('1-8'));
+
+  // Conferência intermediária: as 3 bandeiras foram postas (40 − 3 = 37).
+  expect(contador()).toHaveTextContent(/^37$/);
+
+  await user.dblClick(celula('1-9'));
+
+  // Positivo: nada abriu, então 2-8 e 2-9 continuam ocultas.
+  expect(celula('2-8')).toHaveAttribute('data-estado', 'oculta');
+  expect(celula('2-9')).toHaveAttribute('data-estado', 'oculta');
+
+  // Positivo: as 3 bandeiras continuam no lugar.
+  expect(celula('1-8')).toHaveAttribute('data-estado', 'bandeira');
+  expect(celula('1-10')).toHaveAttribute('data-estado', 'bandeira');
+  expect(celula('2-10')).toHaveAttribute('data-estado', 'bandeira');
+
+  // Positivo: 1-9 continua revelada com "2".
+  expect(celula('1-9')).toHaveAttribute('data-estado', 'revelada');
+  expect(celula('1-9')).toHaveTextContent(/^2$/);
+
+  // Positivo: o contador continua em 37.
+  expect(contador()).toHaveTextContent(/^37$/);
+
+  // Positivo: só 1-9 revelada, 3 bandeiras, as outras 248 ocultas.
+  expect(contarEstados()).toEqual({
+    oculta: 248,
+    revelada: 1,
+    bandeira: 3,
+    mina: 0,
+    explodida: 0,
+    'bandeira-errada': 0,
+  });
+
+  // Positivo: o jogo não terminou, então a mensagem continua vazia.
+  mensagemVazia();
+});
