@@ -244,3 +244,42 @@ test('TC-CM-22 nova partida', async () => {
   // Positivo: o jogo não terminou, então a mensagem continua vazia.
   mensagemVazia();
 });
+
+// TC-CM-28 (caso adicional): uma bandeira numa célula sem mina impede a vitória. Com a bandeira em 1-1,
+// abrir o resto dá 211 (fronteira 211 × 212). Tirar a bandeira e clicar em 1-1 dá a vitória de 212.
+test('TC-CM-28 bandeira numa célula sem mina impede a vitória', async () => {
+  const user = await abrirJogo({ minas: MINAS_PADRAO });
+  await cliqueDireito(user, celula('1-1'));
+  await user.click(celula('1-2'));
+  await user.click(celula('1-13'));
+
+  // 1ª conferência: 211 reveladas (125 + 86), 40 ocultas (as minas) e a bandeira em 1-1 impede a vitória.
+  expect(celula('1-1')).toHaveAttribute('data-estado', 'bandeira');
+  expect(contarEstados()).toEqual({
+    oculta: 40,
+    revelada: 211,
+    bandeira: 1,
+    mina: 0,
+    explodida: 0,
+    'bandeira-errada': 0,
+  });
+  expect(contador()).toHaveTextContent(/^39$/);
+  mensagemVazia();
+
+  // Tira a bandeira de 1-1 e clica nela: agora são 212 reveladas e a vitória.
+  await cliqueDireito(user, celula('1-1'));
+  await user.click(celula('1-1'));
+
+  // 2ª conferência: a vitória é anunciada com as 212 células sem mina reveladas.
+  expect(mensagem()).toHaveTextContent(/^Você venceu!$/);
+  expect(celula('1-1')).toHaveAttribute('data-estado', 'revelada');
+  expect(contador()).toHaveTextContent(/^0$/);
+  expect(contarEstados()).toEqual({
+    oculta: 0,
+    revelada: 212,
+    bandeira: 40,
+    mina: 0,
+    explodida: 0,
+    'bandeira-errada': 0,
+  });
+});
