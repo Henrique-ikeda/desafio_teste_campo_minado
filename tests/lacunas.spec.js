@@ -86,3 +86,37 @@ test('TC-CM-37 cronômetro para na derrota por duplo clique', async () => {
   esperar(10);
   expect(cronometro()).toHaveTextContent(/^3$/);
 });
+
+// TC-CM-38: depois da derrota o tabuleiro fica bloqueado também para o duplo clique. 1-9 é "2" e tem as 2 bandeiras certas,
+// que abririam 1-8, 2-8 e 2-9 se o jogo ainda aceitasse o duplo clique.
+test('TC-CM-38 duplo clique bloqueado após a derrota', async () => {
+  const user = await abrirJogo({ minas: MINAS_PADRAO });
+  await user.click(celula('1-9'));
+  await cliqueDireito(user, celula('1-10'));
+  await cliqueDireito(user, celula('2-10'));
+  await user.click(celula('3-10')); // mina sem bandeira: perde
+
+  // Conferência intermediária: o jogo terminou em derrota e as vizinhas de 1-9 ainda estão ocultas.
+  expect(mensagem()).toHaveTextContent(/^Você perdeu!$/);
+  expect(celula('3-10')).toHaveAttribute('data-estado', 'explodida');
+  expect(celula('1-8')).toHaveAttribute('data-estado', 'oculta');
+
+  await user.dblClick(celula('1-9'));
+
+  // Positivo: nada abriu.
+  expect(celula('1-8')).toHaveAttribute('data-estado', 'oculta');
+  expect(celula('2-8')).toHaveAttribute('data-estado', 'oculta');
+  expect(celula('2-9')).toHaveAttribute('data-estado', 'oculta');
+
+  // Positivo: o estado é o do instante da derrota (1 revelada, 2 bandeiras, 37 minas, 1 explodida, 211 ocultas).
+  expect(contarEstados()).toEqual({
+    oculta: 211,
+    revelada: 1,
+    bandeira: 2,
+    mina: 37,
+    explodida: 1,
+    'bandeira-errada': 0,
+  });
+  expect(contador()).toHaveTextContent(/^38$/);
+  expect(mensagem()).toHaveTextContent(/^Você perdeu!$/);
+});
