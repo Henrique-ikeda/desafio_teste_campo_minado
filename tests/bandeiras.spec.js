@@ -75,3 +75,30 @@ test('TC-CM-14 tirar bandeira', async () => {
   // Positivo: o jogo não terminou, então a mensagem continua vazia.
   mensagemVazia();
 });
+
+// TC-CM-15: bandeira protege a célula. 1-10 é mina; com bandeira, o clique esquerdo não a revela
+// nem explode. Por isso o jogo segue: mensagem vazia e a bandeira continua em 1-10.
+test('TC-CM-15 bandeira protege a célula', async () => {
+  const user = await abrirJogo({ minas: MINAS_PADRAO });
+  await cliqueDireito(user, celula('1-10'));
+  await user.click(celula('1-10'));
+
+  // Positivo: 1-10 continua com bandeira (o clique esquerdo não a revelou).
+  expect(celula('1-10')).toHaveAttribute('data-estado', 'bandeira');
+
+  // Positivo: o contador continua em 39.
+  expect(contador()).toHaveTextContent(/^39$/);
+
+  // Positivo: só a bandeira em 1-10; nada revelado, nada explodido.
+  expect(contarEstados()).toEqual({
+    oculta: 251,
+    revelada: 0,
+    bandeira: 1,
+    mina: 0,
+    explodida: 0,
+    'bandeira-errada': 0,
+  });
+
+  // Positivo: não houve derrota, então a mensagem continua vazia.
+  mensagemVazia();
+});
